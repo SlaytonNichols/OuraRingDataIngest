@@ -3,7 +3,7 @@ using ServiceStack.OrmLite;
 
 namespace OuraRingDataIngest.Migrations
 {
-    public class Migration1 : MigrationBase
+    public class Migration2 : MigrationBase
     {
         public override void Up()
         {

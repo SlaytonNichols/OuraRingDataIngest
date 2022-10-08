@@ -1,5 +1,5 @@
 /* Options:
-Date: 2022-10-08 16:41:18
+Date: 2022-10-08 17:50:02
 Version: 6.21
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://localhost:5001
@@ -36,61 +36,8 @@ export interface IHasBearerToken
     bearerToken?: string;
 }
 
-export interface ICreateDb<Table>
-{
-}
-
-export interface IUpdateDb<Table>
-{
-}
-
-export interface IDeleteDb<Table>
-{
-}
-
 export interface IPost
 {
-}
-
-// @DataContract
-export class AuditBase
-{
-    // @DataMember(Order=1)
-    public createdDate?: string;
-
-    // @DataMember(Order=2)
-    // @Required()
-    public createdBy?: string;
-
-    // @DataMember(Order=3)
-    public modifiedDate?: string;
-
-    // @DataMember(Order=4)
-    // @Required()
-    public modifiedBy?: string;
-
-    // @DataMember(Order=5)
-    public deletedDate?: string;
-
-    // @DataMember(Order=6)
-    public deletedBy?: string;
-
-    public constructor(init?: Partial<AuditBase>) { (Object as any).assign(this, init); }
-}
-
-/**
-* Blog post
-*/
-export class Post extends AuditBase
-{
-    public id?: number;
-    public mdText?: string;
-    public title?: string;
-    public path?: string;
-    public summary?: string;
-    public draft?: boolean;
-
-    public constructor(init?: Partial<Post>) { super(init); (Object as any).assign(this, init); }
 }
 
 // @DataContract
@@ -132,37 +79,11 @@ export class ResponseStatus
     public constructor(init?: Partial<ResponseStatus>) { (Object as any).assign(this, init); }
 }
 
-// @DataContract
-export class QueryResponse<T>
+export class HelloResponse
 {
-    // @DataMember(Order=1)
-    public offset?: number;
+    public result?: string;
 
-    // @DataMember(Order=2)
-    public total?: number;
-
-    // @DataMember(Order=3)
-    public results?: T[];
-
-    // @DataMember(Order=4)
-    public meta?: { [index: string]: string; };
-
-    // @DataMember(Order=5)
-    public responseStatus?: ResponseStatus;
-
-    public constructor(init?: Partial<QueryResponse<T>>) { (Object as any).assign(this, init); }
-}
-
-// @DataContract
-export class IdResponse
-{
-    // @DataMember(Order=1)
-    public id?: string;
-
-    // @DataMember(Order=2)
-    public responseStatus?: ResponseStatus;
-
-    public constructor(init?: Partial<IdResponse>) { (Object as any).assign(this, init); }
+    public constructor(init?: Partial<HelloResponse>) { (Object as any).assign(this, init); }
 }
 
 // @DataContract
@@ -279,73 +200,16 @@ export class RegisterResponse implements IHasSessionId, IHasBearerToken
     public constructor(init?: Partial<RegisterResponse>) { (Object as any).assign(this, init); }
 }
 
-/**
-* Find posts
-*/
-// @Route("/posts", "GET")
-// @Route("/posts/{Path}", "GET")
-export class QueryPosts implements IReturn<QueryResponse<Post>>
+// @Route("/hello")
+// @Route("/hello/{Name}")
+export class Hello implements IReturn<HelloResponse>
 {
-    public path?: string;
+    public name?: string;
 
-    public constructor(init?: Partial<QueryPosts>) { (Object as any).assign(this, init); }
-    public getTypeName() { return 'QueryPosts'; }
-    public getMethod() { return 'GET'; }
-    public createResponse() { return new QueryResponse<Post>(); }
-}
-
-/**
-* Create a new post
-*/
-// @Route("/posts", "POST")
-// @ValidateRequest(Validator="HasRole(`Admin`)")
-export class CreatePost implements IReturn<IdResponse>, ICreateDb<Post>
-{
-    public mdText?: string;
-    public title?: string;
-    public path?: string;
-    public summary?: string;
-    public draft?: boolean;
-
-    public constructor(init?: Partial<CreatePost>) { (Object as any).assign(this, init); }
-    public getTypeName() { return 'CreatePost'; }
+    public constructor(init?: Partial<Hello>) { (Object as any).assign(this, init); }
+    public getTypeName() { return 'Hello'; }
     public getMethod() { return 'POST'; }
-    public createResponse() { return new IdResponse(); }
-}
-
-/**
-* Update an existing post
-*/
-// @Route("/posts/{Id}", "PATCH")
-// @ValidateRequest(Validator="HasRole(`Admin`)")
-export class UpdatePost implements IReturn<IdResponse>, IUpdateDb<Post>
-{
-    public id?: number;
-    public mdText?: string;
-    public title?: string;
-    public path?: string;
-    public summary?: string;
-    public draft?: boolean;
-
-    public constructor(init?: Partial<UpdatePost>) { (Object as any).assign(this, init); }
-    public getTypeName() { return 'UpdatePost'; }
-    public getMethod() { return 'PATCH'; }
-    public createResponse() { return new IdResponse(); }
-}
-
-/**
-* Delete a Post
-*/
-// @Route("/posts/{Id}", "DELETE")
-// @ValidateRequest(Validator="HasRole(`Admin`)")
-export class DeletePost implements IReturnVoid, IDeleteDb<Post>
-{
-    public id?: number;
-
-    public constructor(init?: Partial<DeletePost>) { (Object as any).assign(this, init); }
-    public getTypeName() { return 'DeletePost'; }
-    public getMethod() { return 'DELETE'; }
-    public createResponse() {}
+    public createResponse() { return new HelloResponse(); }
 }
 
 /**
