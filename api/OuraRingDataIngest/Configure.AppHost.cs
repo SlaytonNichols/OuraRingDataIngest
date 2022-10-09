@@ -50,7 +50,7 @@ public class AppHost : AppHostBase, IHostingStartup
         Plugins.Add(new CorsFeature(allowOriginWhitelist: new[]{
             "http://localhost:5000",
             "http://localhost:3000",
-            "http://localhost:5173",
+            "http://localhost:5174",
             "https://localhost:5001",
             "https://" + Environment.GetEnvironmentVariable("DEPLOY_CDN")
         }, allowCredentials: true));
