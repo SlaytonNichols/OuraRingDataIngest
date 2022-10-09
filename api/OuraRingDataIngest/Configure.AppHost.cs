@@ -16,7 +16,7 @@ public class AppHost : AppHostBase, IHostingStartup
             services.ConfigureNonBreakingSameSiteCookies(context.HostingEnvironment);
             services.AddHostedService<HeartRateIngestService>();
             services.AddHttpUtilsClient();
-            services.AddJsonApiClient("https://" + Environment.GetEnvironmentVariable("DEPLOY_API"));
+            services.AddJsonApiClient("https://" + Environment.GetEnvironmentVariable("DEPLOY_API") + ":5001");
         }).ConfigureLogging(logginBuilder =>
         {
             logginBuilder.ClearProviders();

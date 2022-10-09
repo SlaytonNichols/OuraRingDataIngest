@@ -37,61 +37,75 @@ namespace OuraRingDataIngest.ServiceInterface
                         RememberMe = true,
                     });
 
-                    var startDate = $"{DateTime.Now.AddHours(-8):yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B");
-                    var endDate = $"{DateTime.Now:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B");
+                    if (authResponse.Failed)
+                        _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse.ErrorMessage);
 
-                    var executionId = await client.PostAsync(new CreateExecution
+                    var startDate = DateTime.Now.AddHours(-8);
+                    var endDate = DateTime.Now;
+
+                    var addExecutionResponse = await client.ApiAsync(new CreateExecution
                     {
                         StartDateTime = DateTime.Now,
                         StartQueryDateTime = DateTime.Now.AddHours(-8),
                         EndQueryDateTime = DateTime.Now
                     });
+                    if (addExecutionResponse.Failed)
+                        _logger.LogError("HeartRateIngestService CreateExecution Failed: " + addExecutionResponse.ErrorMessage);
 
-                    var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
-
-                    heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", $"{startDate}", false);
-                    heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", $"{endDate}", false);
-
-                    var response = await heartRateUrl.GetJsonFromUrlAsync(x =>
-                    {
-                        x.With(req =>
-                        {
-                            req.AddHeader("Authorization", "Bearer " + Environment.GetEnvironmentVariable("Oura__Pat"));
-                            req.AddHeader("Accept", "application/json");
-                        });
-                    }).ConfigAwait();
-
-                    _logger.LogInformation(response);
-
-                    var heartRates = response.FromJson<HeartRates>();
-                    await client.ApiAsync(new UpdateExecution
-                    {
-                        Id = executionId.Id,
-                        RecordsInserted = heartRates.Data.Count()
-                    });
+                    var heartRates = await GetHeartRatesAsync(startDate, endDate);
                     foreach (var item in heartRates.Data)
                     {
-                        await client.ApiAsync(new CreateHeartRate
+                        var index = heartRates.Data.ToList().IndexOf(item);
+                        var addHeartRateResponse = await client.ApiAsync(new CreateHeartRate
                         {
                             Bpm = item.Bpm,
                             Source = item.Source,
                             Timestamp = item.Timestamp
                         });
+                        if (addHeartRateResponse.Failed)
+                            _logger.LogError($"HeartRateIngestService CreateHeartRate #{index} Failed: " + addHeartRateResponse.ErrorMessage);
                     }
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await client.ApiAsync(new UpdateExecution
+                    var updateExecution = await client.ApiAsync(new UpdateExecution
                     {
-                        Id = executionId.Id,
-                        EndDateTime = DateTime.Now
+                        Id = addExecutionResponse.Response.Id,
+                        EndDateTime = DateTime.Now,
+                        RecordsInserted = heartRates.Data.ToList().Count()
                     });
+                    if (updateExecution.Failed)
+                        _logger.LogError("HeartRateIngestService UpdateExecution Failed: " + updateExecution.ErrorMessage);
+
                     await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
                 }
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, "Error in HeartRateIngestService");
+                _logger.LogError(ex, "HeartRateIngestService Error");
             }
+        }
+
+        private async Task<HeartRates> GetHeartRatesAsync(DateTime startDate, DateTime endDate)
+        {
+            _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Starting...");
+
+            var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
+
+            heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", $"{startDate:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B"), false);
+            heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", $"{endDate:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B"), false);
+
+            var response = await heartRateUrl.GetJsonFromUrlAsync(x =>
+            {
+                x.With(req =>
+                {
+                    req.AddHeader("Authorization", "Bearer " + Environment.GetEnvironmentVariable("Oura__Pat"));
+                    req.AddHeader("Accept", "application/json");
+                });
+            }).ConfigAwait();
+
+            _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Completed. Oura Ring API Response:" + response);
+
+            return response.FromJson<HeartRates>();
         }
     }
 }
