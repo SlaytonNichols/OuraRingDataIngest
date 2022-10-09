@@ -32,8 +32,6 @@
     <PackageReference Include="ServiceStack.Server" Version="6.*" />
     <PackageReference Include="ServiceStack.Text" Version="6.*" />
     <PackageReference Include="ServiceStack.Api.OpenApi" Version="6.3.0" />
-    <PackageReference Include="ServiceStack.Discovery.Consul" Version="6.*" />
-
 
   </ItemGroup>
 

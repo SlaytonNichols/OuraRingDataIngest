@@ -42,7 +42,6 @@ public class AppHost : AppHostBase, IHostingStartup
             WebHostUrl = Environment.GetEnvironmentVariable("BASE_URI"),
         });
 
-        Plugins.Add(new ConsulFeature());
         Plugins.Add(new SpaFeature
         {
             EnableSpaFallback = true
