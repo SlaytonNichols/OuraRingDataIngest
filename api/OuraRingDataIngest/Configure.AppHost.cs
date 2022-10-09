@@ -14,6 +14,7 @@ public class AppHost : AppHostBase, IHostingStartup
         .ConfigureServices((context, services) =>
         {
             services.ConfigureNonBreakingSameSiteCookies(context.HostingEnvironment);
+            services.AddHttpClient();
             services.AddHostedService<HeartRateIngestService>();
             services.AddHttpUtilsClient();
         }).ConfigureLogging(logginBuilder =>
