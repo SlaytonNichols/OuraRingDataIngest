@@ -52,7 +52,7 @@ namespace OuraRingDataIngest.ServiceInterface
                     AuthenticateResponse authResponse = client.Post(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
-                        UserName = Environment.GetEnvironmentVariable("USERNAME"),
+                        UserName = Environment.GetEnvironmentVariable("EMAIL"),
                         Password = Environment.GetEnvironmentVariable("PASSWORD"),
                         RememberMe = true,
                     });

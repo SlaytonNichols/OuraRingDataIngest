@@ -15,7 +15,7 @@ services:
       ConnectionStrings__DefaultConnection: ${DEFAULTCONNECTION}
       AuthKeyBase64: ${AUTHKEYBASE64}
       Oura__Pat: ${Oura__Pat}
-      USERNAME: ${USERNAME}
+      EMAIL: ${EMAIL}
       PASSWORD: ${PASSWORD}
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
