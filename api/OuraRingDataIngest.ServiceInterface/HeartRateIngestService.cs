@@ -20,7 +20,8 @@ namespace OuraRingDataIngest.ServiceInterface
         public IServiceClient CreateClient() => new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
         {
             UserName = Environment.GetEnvironmentVariable("EMAIL"),
-            Password = Environment.GetEnvironmentVariable("PASSWORD")
+            Password = Environment.GetEnvironmentVariable("PASSWORD"),
+            AlwaysSendBasicAuthHeader = true,
         };
 
 
@@ -44,51 +45,51 @@ namespace OuraRingDataIngest.ServiceInterface
                     var updateExecutionResponse = new ApiResult<UpdateResponse>();
                     var createHeartRateResponse = new ApiResult<IdResponse>();
 
-                    authResponse = await _client.PostAsync(new Authenticate
+                    // authResponse = await _client.PostAsync(new Authenticate
+                    // {
+                    //     provider = BasicAuthProvider.Name,
+                    //     UserName = Environment.GetEnvironmentVariable("EMAIL"),
+                    //     Password = Environment.GetEnvironmentVariable("PASSWORD"),
+                    //     RememberMe = true,
+                    // });
+
+                    // if (authResponse.Roles.Contains("Admin"))
+                    // {
+                    addExecutionResponse = await _client.ApiAsync(new CreateExecution
                     {
-                        provider = CredentialsAuthProvider.Name,
-                        UserName = Environment.GetEnvironmentVariable("EMAIL"),
-                        Password = Environment.GetEnvironmentVariable("PASSWORD"),
-                        RememberMe = true,
+                        StartDateTime = DateTime.Now,
+                        StartQueryDateTime = startDate,
+                        EndQueryDateTime = endDate
                     });
+                    if (addExecutionResponse.Failed)
+                        _logger.LogError("HeartRateIngestService CreateExecution Failed: " + addExecutionResponse.ErrorMessage);
 
-                    if (authResponse.Roles.Contains("Admin"))
-                    {
-                        addExecutionResponse = await _client.ApiAsync(new CreateExecution
+                    var heartRates = await GetHeartRatesAsync(startDate, endDate);
+                    if (heartRates.Errors == null)
+                        foreach (var item in heartRates.Data)
                         {
-                            StartDateTime = DateTime.Now,
-                            StartQueryDateTime = startDate,
-                            EndQueryDateTime = endDate
-                        });
-                        if (addExecutionResponse.Failed)
-                            _logger.LogError("HeartRateIngestService CreateExecution Failed: " + addExecutionResponse.ErrorMessage);
-
-                        var heartRates = await GetHeartRatesAsync(startDate, endDate);
-                        if (heartRates.Errors == null)
-                            foreach (var item in heartRates.Data)
+                            var index = heartRates.Data.ToList().IndexOf(item);
+                            createHeartRateResponse = await _client.ApiAsync(new CreateHeartRate
                             {
-                                var index = heartRates.Data.ToList().IndexOf(item);
-                                createHeartRateResponse = await _client.ApiAsync(new CreateHeartRate
-                                {
-                                    Bpm = item.Bpm,
-                                    Source = item.Source,
-                                    Timestamp = item.Timestamp
-                                });
-                                if (createHeartRateResponse.Failed)
-                                    _logger.LogError($"HeartRateIngestService CreateHeartRate #{index} Failed: " + createHeartRateResponse.ErrorMessage);
-                            }
+                                Bpm = item.Bpm,
+                                Source = item.Source,
+                                Timestamp = item.Timestamp
+                            });
+                            if (createHeartRateResponse.Failed)
+                                _logger.LogError($"HeartRateIngestService CreateHeartRate #{index} Failed: " + createHeartRateResponse.ErrorMessage);
+                        }
 
-                        updateExecutionResponse = await _client.ApiAsync(new UpdateExecution
-                        {
-                            Id = addExecutionResponse.Response.Id,
-                            EndDateTime = DateTime.Now,
-                            RecordsInserted = heartRates.Data.ToList().Count()
-                        });
-                        if (updateExecutionResponse.Failed)
-                            _logger.LogError("HeartRateIngestService UpdateExecution Failed: " + updateExecutionResponse.ErrorMessage);
-                    }
-                    else
-                        _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse);
+                    updateExecutionResponse = await _client.ApiAsync(new UpdateExecution
+                    {
+                        Id = addExecutionResponse.Response.Id,
+                        EndDateTime = DateTime.Now,
+                        RecordsInserted = heartRates.Data.ToList().Count()
+                    });
+                    if (updateExecutionResponse.Failed)
+                        _logger.LogError("HeartRateIngestService UpdateExecution Failed: " + updateExecutionResponse.ErrorMessage);
+                    // }
+                    // else
+                    //     _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse);
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
                     await Task.Delay(TimeSpan.FromDays(1), stoppingToken);

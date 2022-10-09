@@ -37,6 +37,7 @@ public class ConfigureAuth : IHostingStartup
                         AuthKeyBase64 = appSettings.GetString("AuthKeyBase64"),
                     },
                     new CredentialsAuthProvider(appSettings),
+                    new BasicAuthProvider(appSettings),
                 })
             {
                 IncludeDefaultLogin = false
