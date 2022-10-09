@@ -1,2 +1,0 @@
-## Oura Ring Data Ingest
-
