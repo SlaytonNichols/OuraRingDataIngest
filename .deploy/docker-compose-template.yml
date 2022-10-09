@@ -18,6 +18,7 @@ services:
       EMAIL: ${EMAIL}
       PASSWORD: ${PASSWORD}
       SERVICESTACK_LICENSE: ${SERVICESTACK_LICENSE}
+      BASE_URI: ${BASE_URI}
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
   "${APP_NAME}-migration":
