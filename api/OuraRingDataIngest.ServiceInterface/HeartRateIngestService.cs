@@ -48,7 +48,7 @@ namespace OuraRingDataIngest.ServiceInterface
 
                     var heartRates = response.FromJson<HeartRates>();
 
-                    var client = new JsonServiceClient(Environment.GetEnvironmentVariable("DEPLOY_API"));
+                    var client = new JsonServiceClient($"https://{Environment.GetEnvironmentVariable("DEPLOY_API")}");
                     AuthenticateResponse authResponse = client.Post(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
