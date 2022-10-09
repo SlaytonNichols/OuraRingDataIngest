@@ -50,7 +50,6 @@ public class AppHost : AppHostBase, IHostingStartup
 
         Plugins.Add(new CorsFeature(allowOriginWhitelist: new[]{
             "http://localhost:5002",
-            "http://172.17.0.5:5002",
             "http://localhost:3000",
             "http://localhost:5174",
             "https://localhost:5003",
