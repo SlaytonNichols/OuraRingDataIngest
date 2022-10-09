@@ -177,7 +177,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           port: 22
-          envs: APPTOKEN,USERNAME,AUTHKEYBASE64,CONNECTIONSTRINGS__DEFAULTCONNECTION, Oura__Pat, EMAIL, PASSWORD
+          envs: APPTOKEN,USERNAME,AUTHKEYBASE64,CONNECTIONSTRINGS__DEFAULTCONNECTION, Oura__Pat
           script: |
             echo $APPTOKEN | docker login ghcr.io -u $USERNAME --password-stdin
             docker-compose -f ~/.deploy/${{ github.event.repository.name }}-docker-compose.yml pull
