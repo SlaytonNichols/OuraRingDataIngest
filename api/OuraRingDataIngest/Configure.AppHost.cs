@@ -39,9 +39,8 @@ public class AppHost : AppHostBase, IHostingStartup
         //ServiceStack
         SetConfig(new HostConfig
         {
-            WebHostUrl = Environment.GetEnvironmentVariable("BASE_URI"),
         });
-
+        ConfigurePlugin<PredefinedRoutesFeature>(feature => feature.JsonApiRoute = null);
         Plugins.Add(new SpaFeature
         {
             EnableSpaFallback = true
