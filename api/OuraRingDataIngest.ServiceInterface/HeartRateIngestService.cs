@@ -28,8 +28,8 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var client = new JsonServiceClient("https://" + Environment.GetEnvironmentVariable("DEPLOY_API"));
-                    AuthenticateResponse authResponse = await client.PostAsync(new Authenticate
+                    var client = new JsonApiClient("https://" + Environment.GetEnvironmentVariable("DEPLOY_API"));
+                    var authResponse = await client.ApiAsync(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
                         UserName = Environment.GetEnvironmentVariable("EMAIL"),
@@ -64,14 +64,14 @@ namespace OuraRingDataIngest.ServiceInterface
                     _logger.LogInformation(response);
 
                     var heartRates = response.FromJson<HeartRates>();
-                    await client.PatchAsync(new UpdateExecution
+                    await client.ApiAsync(new UpdateExecution
                     {
                         Id = executionId.Id,
                         RecordsInserted = heartRates.Data.Count()
                     });
                     foreach (var item in heartRates.Data)
                     {
-                        await client.PostAsync(new CreateHeartRate
+                        await client.ApiAsync(new CreateHeartRate
                         {
                             Bpm = item.Bpm,
                             Source = item.Source,
@@ -80,7 +80,7 @@ namespace OuraRingDataIngest.ServiceInterface
                     }
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await client.PatchAsync(new UpdateExecution
+                    await client.ApiAsync(new UpdateExecution
                     {
                         Id = executionId.Id,
                         EndDateTime = DateTime.Now
