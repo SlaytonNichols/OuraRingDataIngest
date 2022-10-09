@@ -44,6 +44,7 @@ namespace OuraRingDataIngest.ServiceInterface
                     //     AlwaysSendBasicAuthHeader = true
                     // };
                     var _client = CreateClient();
+
                     _logger.LogInformation("JsonServiceClient " + _client.ToJson());
                     var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
