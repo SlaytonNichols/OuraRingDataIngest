@@ -41,7 +41,7 @@ namespace OuraRingDataIngest.ServiceInterface
                     if (authResponse.Failed)
                         _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse.ErrorMessage);
 
-                    var startDate = DateTime.Now.AddDays(-2);
+                    var startDate = DateTime.Now.AddHours(-2);
                     var endDate = DateTime.Now;
 
                     var addExecutionResponse = await _client.ApiAsync(new CreateExecution
