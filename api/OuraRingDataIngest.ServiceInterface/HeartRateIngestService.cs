@@ -34,12 +34,12 @@ namespace OuraRingDataIngest.ServiceInterface
                     var _client = CreateClient();
                     var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
-                    var authResponse = new ApiResult<AuthenticateResponse>();
+                    var authResponse = new AuthenticateResponse();
                     var addExecutionResponse = new ApiResult<CreateResponse>();
                     var updateExecutionResponse = new ApiResult<UpdateResponse>();
                     var createHeartRateResponse = new ApiResult<IdResponse>();
 
-                    authResponse = await _client.ApiAsync(new Authenticate
+                    authResponse = await _client.PostAsync(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
                         UserName = Environment.GetEnvironmentVariable("EMAIL"),
@@ -47,7 +47,7 @@ namespace OuraRingDataIngest.ServiceInterface
                         RememberMe = true,
                     });
 
-                    if (authResponse.Succeeded)
+                    if (authResponse.Roles.Contains("Admin"))
                     {
                         addExecutionResponse = await _client.ApiAsync(new CreateExecution
                         {
@@ -83,7 +83,7 @@ namespace OuraRingDataIngest.ServiceInterface
                             _logger.LogError("HeartRateIngestService UpdateExecution Failed: " + updateExecutionResponse.ErrorMessage);
                     }
                     else
-                        _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse.ErrorMessage);
+                        _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse);
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
                     await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
