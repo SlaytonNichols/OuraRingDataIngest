@@ -3,7 +3,7 @@ services:
   "${APP_NAME}":
     image: ghcr.io/${IMAGE_REPO}:${RELEASE_VERSION}
     restart: always
-    network_mode: bridge
+    network_mode: host
     ports:
       - "5002:80"
     environment:
@@ -19,8 +19,6 @@ services:
       PASSWORD: ${PASSWORD}
       SERVICESTACK_LICENSE: ${SERVICESTACK_LICENSE}
       BASE_URI: ${BASE_URI}
-    extra_hosts:
-      - "oura.nicholsslayton.com:159.203.157.122"
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
   "${APP_NAME}-migration":
