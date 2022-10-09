@@ -22,7 +22,11 @@ namespace OuraRingDataIngest.ServiceInterface
         public HeartRateIngestService(ILogger<HeartRateIngestService> logger, JsonApiClient client)
         {
             _logger = logger;
-            _client = client;
+            _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
+            {
+                UseBasePath = "/api",
+                AlwaysSendBasicAuthHeader = true
+            };
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
