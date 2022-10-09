@@ -18,7 +18,7 @@ namespace OuraRingDataIngest.ServiceInterface
     {
         private readonly ILogger<HeartRateIngestService> _logger;
         // private readonly JsonApiClient _client;
-        public IServiceClient CreateClient() => new JsonServiceClient(Environment.GetEnvironmentVariable("BASE_URI"));
+        public IServiceClient CreateClient() => new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"));
 
         public HeartRateIngestService(ILogger<HeartRateIngestService> logger)
         {
