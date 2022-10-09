@@ -14,7 +14,7 @@ BEGIN
 		[Id] [int] IDENTITY(1,1) NOT NULL,
 		[Source] VARCHAR(50) NOT NULL,
         [Bpm] INT NOT NULL,
-        [Timestamp] DATETIME NOT NULL,
+        [Timestamp] DateTime NOT NULL,
 	PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC

@@ -1,5 +1,5 @@
 /* Options:
-Date: 2022-10-09 00:05:58
+Date: 2022-10-09 11:14:39
 Version: 6.21
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://localhost:5001
@@ -58,7 +58,7 @@ export class HeartRate
     public constructor(init?: Partial<HeartRate>) { (Object as any).assign(this, init); }
 }
 
-export class Execution
+export class Executions
 {
     public id?: number;
     public startDateTime?: string;
@@ -67,7 +67,7 @@ export class Execution
     public endQueryDateTime?: string;
     public recordsInserted?: number;
 
-    public constructor(init?: Partial<Execution>) { (Object as any).assign(this, init); }
+    public constructor(init?: Partial<Executions>) { (Object as any).assign(this, init); }
 }
 
 // @DataContract
@@ -263,19 +263,11 @@ export class CreateResponse
     public constructor(init?: Partial<CreateResponse>) { (Object as any).assign(this, init); }
 }
 
-// @DataContract
-export class IntResponse
+export class UpdateResponse
 {
-    // @DataMember(Order=1)
-    public result?: number;
+    public id?: number;
 
-    // @DataMember(Order=2)
-    public meta?: { [index: string]: string; };
-
-    // @DataMember(Order=3)
-    public responseStatus?: ResponseStatus;
-
-    public constructor(init?: Partial<IntResponse>) { (Object as any).assign(this, init); }
+    public constructor(init?: Partial<UpdateResponse>) { (Object as any).assign(this, init); }
 }
 
 /**
@@ -460,13 +452,13 @@ export class Register implements IReturn<RegisterResponse>, IPost
 */
 // @Route("/executions", "GET")
 // @ValidateRequest(Validator="HasRole(`Admin`)")
-export class QueryExecutions implements IReturn<QueryResponse<Execution>>
+export class QueryExecutions implements IReturn<QueryResponse<Executions>>
 {
 
     public constructor(init?: Partial<QueryExecutions>) { (Object as any).assign(this, init); }
     public getTypeName() { return 'QueryExecutions'; }
     public getMethod() { return 'GET'; }
-    public createResponse() { return new QueryResponse<Execution>(); }
+    public createResponse() { return new QueryResponse<Executions>(); }
 }
 
 /**
@@ -474,14 +466,11 @@ export class QueryExecutions implements IReturn<QueryResponse<Execution>>
 */
 // @Route("/executions", "POST")
 // @ValidateRequest(Validator="HasRole(`Admin`)")
-export class CreateExecution implements IReturn<CreateResponse>, ICreateDb<Execution>
+export class CreateExecution implements IReturn<CreateResponse>, ICreateDb<Executions>
 {
-    public id?: number;
     public startDateTime?: string;
-    public endDateTime?: string;
     public startQueryDateTime?: string;
     public endQueryDateTime?: string;
-    public recordsInserted?: number;
 
     public constructor(init?: Partial<CreateExecution>) { (Object as any).assign(this, init); }
     public getTypeName() { return 'CreateExecution'; }
@@ -494,18 +483,15 @@ export class CreateExecution implements IReturn<CreateResponse>, ICreateDb<Execu
 */
 // @Route("/executions/{Id}", "PATCH")
 // @ValidateRequest(Validator="HasRole(`Admin`)")
-export class UpdateExecution implements IReturn<IntResponse>, IUpdateDb<Execution>
+export class UpdateExecution implements IReturn<UpdateResponse>, IUpdateDb<Executions>
 {
     public id?: number;
-    public startDateTime?: string;
     public endDateTime?: string;
-    public startQueryDateTime?: string;
-    public endQueryDateTime?: string;
     public recordsInserted?: number;
 
     public constructor(init?: Partial<UpdateExecution>) { (Object as any).assign(this, init); }
     public getTypeName() { return 'UpdateExecution'; }
     public getMethod() { return 'PATCH'; }
-    public createResponse() { return new IntResponse(); }
+    public createResponse() { return new UpdateResponse(); }
 }
 

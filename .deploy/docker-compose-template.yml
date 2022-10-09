@@ -17,6 +17,7 @@ services:
       Oura__Pat: ${Oura__Pat}
       EMAIL: ${EMAIL}
       PASSWORD: ${PASSWORD}
+      SERVICESTACK_LICENSE: ${SERVICESTACK_LICENSE}
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
   "${APP_NAME}-migration":

@@ -37,10 +37,9 @@ namespace OuraRingDataIngest.ServiceModel
     public class CreateExecution : ICreateDb<Executions>, IReturn<CreateResponse>
     {
         public DateTimeOffset StartDateTime { get; set; }
-        public DateTimeOffset EndDateTime { get; set; }
         public DateTimeOffset StartQueryDateTime { get; set; }
         public DateTimeOffset EndQueryDateTime { get; set; }
-        public int RecordsInserted { get; set; }
+
     }
 
     public class CreateResponse
@@ -54,9 +53,7 @@ namespace OuraRingDataIngest.ServiceModel
     public class UpdateExecution : IUpdateDb<Executions>, IReturn<UpdateResponse>
     {
         public int Id { get; set; }
-        public DateTimeOffset StartDateTime { get; set; }
         public DateTimeOffset EndDateTime { get; set; }
-        public DateTimeOffset EndQueryDateTime { get; set; }
         public int RecordsInserted { get; set; }
     }
 
