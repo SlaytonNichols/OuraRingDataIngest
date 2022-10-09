@@ -28,7 +28,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
 
-                    var startDate = DateTime.Now.AddDays(-1);
+                    var startDate = DateTime.Now.AddHours(-4);
                     var endDate = DateTime.Now;
 
                     var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
@@ -48,8 +48,7 @@ namespace OuraRingDataIngest.ServiceInterface
 
                     var heartRates = response.FromJson<HeartRates>();
 
-                    // var client = new JsonServiceClient($"https://{Environment.GetEnvironmentVariable("DEPLOY_API")}");
-                    var client = new JsonServiceClient("https://localhost:5001/");
+                    var client = new JsonServiceClient($"https://{Environment.GetEnvironmentVariable("DEPLOY_API")}");
                     AuthenticateResponse authResponse = client.Post(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
@@ -69,7 +68,7 @@ namespace OuraRingDataIngest.ServiceInterface
                     }
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await Task.Delay(TimeSpan.FromDays(8), stoppingToken);
+                    await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
                 }
             }
             catch (System.Exception ex)
