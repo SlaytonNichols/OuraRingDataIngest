@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using ServiceStack.Text;
 using ServiceStack.Configuration;
 using ServiceStack.Auth;
+using System.Linq;
 
 namespace OuraRingDataIngest.ServiceInterface
 {
@@ -27,9 +28,25 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
+                    var baseUrl = Environment.GetEnvironmentVariable("DEPLOY_API");
+                    var client = new JsonApiClient($"https://{baseUrl}");
+                    AuthenticateResponse authResponse = await client.PostAsync(new Authenticate
+                    {
+                        provider = CredentialsAuthProvider.Name,
+                        UserName = Environment.GetEnvironmentVariable("EMAIL"),
+                        Password = Environment.GetEnvironmentVariable("PASSWORD"),
+                        RememberMe = true,
+                    });
 
-                    var startDate = DateTime.Now.AddHours(-4);
-                    var endDate = DateTime.Now;
+                    var startDate = DateTime.UtcNow.AddHours(-4);
+                    var endDate = DateTime.UtcNow;
+
+                    var executionId = await client.PostAsync(new CreateExecution
+                    {
+                        StartDateTime = DateTime.UtcNow,
+                        StartQueryDateTime = startDate,
+                        EndQueryDateTime = endDate
+                    });
 
                     var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
                     heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", $"{startDate:yyyy-MM-ddThh:mm:ss}", false);
@@ -47,16 +64,11 @@ namespace OuraRingDataIngest.ServiceInterface
                     _logger.LogInformation(response);
 
                     var heartRates = response.FromJson<HeartRates>();
-
-                    var client = new JsonServiceClient($"https://{Environment.GetEnvironmentVariable("DEPLOY_API")}");
-                    AuthenticateResponse authResponse = client.Post(new Authenticate
+                    await client.PatchAsync(new UpdateExecution
                     {
-                        provider = CredentialsAuthProvider.Name,
-                        UserName = Environment.GetEnvironmentVariable("EMAIL"),
-                        Password = Environment.GetEnvironmentVariable("PASSWORD"),
-                        RememberMe = true,
+                        Id = executionId.Id,
+                        RecordsInserted = heartRates.Data.Count()
                     });
-
                     foreach (var item in heartRates.Data)
                     {
                         await client.PostAsync(new CreateHeartRate
@@ -68,6 +80,11 @@ namespace OuraRingDataIngest.ServiceInterface
                     }
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
+                    await client.PatchAsync(new UpdateExecution
+                    {
+                        Id = executionId.Id,
+                        EndDateTime = DateTime.UtcNow
+                    });
                     await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
                 }
             }

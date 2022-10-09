@@ -1,5 +1,5 @@
 /* Options:
-Date: 2022-10-08 17:50:02
+Date: 2022-10-09 00:05:58
 Version: 6.21
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://localhost:5001
@@ -36,8 +36,38 @@ export interface IHasBearerToken
     bearerToken?: string;
 }
 
+export interface ICreateDb<Table>
+{
+}
+
 export interface IPost
 {
+}
+
+export interface IUpdateDb<Table>
+{
+}
+
+export class HeartRate
+{
+    public id?: number;
+    public bpm?: number;
+    public source?: string;
+    public timestamp?: string;
+
+    public constructor(init?: Partial<HeartRate>) { (Object as any).assign(this, init); }
+}
+
+export class Execution
+{
+    public id?: number;
+    public startDateTime?: string;
+    public endDateTime?: string;
+    public startQueryDateTime?: string;
+    public endQueryDateTime?: string;
+    public recordsInserted?: number;
+
+    public constructor(init?: Partial<Execution>) { (Object as any).assign(this, init); }
 }
 
 // @DataContract
@@ -79,11 +109,16 @@ export class ResponseStatus
     public constructor(init?: Partial<ResponseStatus>) { (Object as any).assign(this, init); }
 }
 
-export class HelloResponse
+// @DataContract
+export class IdResponse
 {
-    public result?: string;
+    // @DataMember(Order=1)
+    public id?: string;
 
-    public constructor(init?: Partial<HelloResponse>) { (Object as any).assign(this, init); }
+    // @DataMember(Order=2)
+    public responseStatus?: ResponseStatus;
+
+    public constructor(init?: Partial<IdResponse>) { (Object as any).assign(this, init); }
 }
 
 // @DataContract
@@ -200,16 +235,64 @@ export class RegisterResponse implements IHasSessionId, IHasBearerToken
     public constructor(init?: Partial<RegisterResponse>) { (Object as any).assign(this, init); }
 }
 
-// @Route("/hello")
-// @Route("/hello/{Name}")
-export class Hello implements IReturn<HelloResponse>
+// @DataContract
+export class QueryResponse<T>
 {
-    public name?: string;
+    // @DataMember(Order=1)
+    public offset?: number;
 
-    public constructor(init?: Partial<Hello>) { (Object as any).assign(this, init); }
-    public getTypeName() { return 'Hello'; }
+    // @DataMember(Order=2)
+    public total?: number;
+
+    // @DataMember(Order=3)
+    public results?: T[];
+
+    // @DataMember(Order=4)
+    public meta?: { [index: string]: string; };
+
+    // @DataMember(Order=5)
+    public responseStatus?: ResponseStatus;
+
+    public constructor(init?: Partial<QueryResponse<T>>) { (Object as any).assign(this, init); }
+}
+
+export class CreateResponse
+{
+    public id?: number;
+
+    public constructor(init?: Partial<CreateResponse>) { (Object as any).assign(this, init); }
+}
+
+// @DataContract
+export class IntResponse
+{
+    // @DataMember(Order=1)
+    public result?: number;
+
+    // @DataMember(Order=2)
+    public meta?: { [index: string]: string; };
+
+    // @DataMember(Order=3)
+    public responseStatus?: ResponseStatus;
+
+    public constructor(init?: Partial<IntResponse>) { (Object as any).assign(this, init); }
+}
+
+/**
+* Create a new record in the heart rate table
+*/
+// @Route("/heart-rate", "POST")
+// @ValidateRequest(Validator="HasRole(`Admin`)")
+export class CreateHeartRate implements IReturn<IdResponse>, ICreateDb<HeartRate>
+{
+    public bpm?: number;
+    public source?: string;
+    public timestamp?: string;
+
+    public constructor(init?: Partial<CreateHeartRate>) { (Object as any).assign(this, init); }
+    public getTypeName() { return 'CreateHeartRate'; }
     public getMethod() { return 'POST'; }
-    public createResponse() { return new HelloResponse(); }
+    public createResponse() { return new IdResponse(); }
 }
 
 /**
@@ -370,5 +453,59 @@ export class Register implements IReturn<RegisterResponse>, IPost
     public getTypeName() { return 'Register'; }
     public getMethod() { return 'POST'; }
     public createResponse() { return new RegisterResponse(); }
+}
+
+/**
+* Find posts
+*/
+// @Route("/executions", "GET")
+// @ValidateRequest(Validator="HasRole(`Admin`)")
+export class QueryExecutions implements IReturn<QueryResponse<Execution>>
+{
+
+    public constructor(init?: Partial<QueryExecutions>) { (Object as any).assign(this, init); }
+    public getTypeName() { return 'QueryExecutions'; }
+    public getMethod() { return 'GET'; }
+    public createResponse() { return new QueryResponse<Execution>(); }
+}
+
+/**
+* Create a new record in the heart rate table
+*/
+// @Route("/executions", "POST")
+// @ValidateRequest(Validator="HasRole(`Admin`)")
+export class CreateExecution implements IReturn<CreateResponse>, ICreateDb<Execution>
+{
+    public id?: number;
+    public startDateTime?: string;
+    public endDateTime?: string;
+    public startQueryDateTime?: string;
+    public endQueryDateTime?: string;
+    public recordsInserted?: number;
+
+    public constructor(init?: Partial<CreateExecution>) { (Object as any).assign(this, init); }
+    public getTypeName() { return 'CreateExecution'; }
+    public getMethod() { return 'POST'; }
+    public createResponse() { return new CreateResponse(); }
+}
+
+/**
+* Update an existing post
+*/
+// @Route("/executions/{Id}", "PATCH")
+// @ValidateRequest(Validator="HasRole(`Admin`)")
+export class UpdateExecution implements IReturn<IntResponse>, IUpdateDb<Execution>
+{
+    public id?: number;
+    public startDateTime?: string;
+    public endDateTime?: string;
+    public startQueryDateTime?: string;
+    public endQueryDateTime?: string;
+    public recordsInserted?: number;
+
+    public constructor(init?: Partial<UpdateExecution>) { (Object as any).assign(this, init); }
+    public getTypeName() { return 'UpdateExecution'; }
+    public getMethod() { return 'PATCH'; }
+    public createResponse() { return new IntResponse(); }
 }
 
