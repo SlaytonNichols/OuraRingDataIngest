@@ -31,7 +31,10 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-
+                    var baseUri = Environment.GetEnvironmentVariable("BASE_URI");
+                    _logger.LogInformation("BASE_URI " + baseUri);
+                    var client = new JsonServiceClient(baseUri);
+                    _logger.LogInformation("JsonServiceClient " + client.ToJson());
                     var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
                     var authResponse = new ApiResult<AuthenticateResponse>();
