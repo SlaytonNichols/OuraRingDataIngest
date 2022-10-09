@@ -12,7 +12,7 @@
         <nav class="relative flex flex-grow">
           <ul class="flex flex-wrap items-center justify-end w-full">
             <NavItem>
-              <NavLink :use-router="true" class="text-lg" href="/test">
+              <NavLink :use-router="true" class="text-lg" href="/executions">
                 <Executions class="m-2"/> Executions
               </NavLink>
             </NavItem>
