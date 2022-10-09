@@ -16,10 +16,12 @@ namespace OuraRingDataIngest.ServiceInterface
     public class HeartRateIngestService : BackgroundService
     {
         private readonly ILogger<HeartRateIngestService> _logger;
+        private readonly JsonApiClient _client;
 
-        public HeartRateIngestService(ILogger<HeartRateIngestService> logger)
+        public HeartRateIngestService(ILogger<HeartRateIngestService> logger, JsonApiClient client)
         {
             _logger = logger;
+            _client = client;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -28,8 +30,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var client = new JsonApiClient("https://" + Environment.GetEnvironmentVariable("DEPLOY_API") + ":5001");
-                    var authResponse = await client.ApiAsync(new Authenticate
+                    var authResponse = await _client.ApiAsync(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
                         UserName = Environment.GetEnvironmentVariable("EMAIL"),
@@ -40,10 +41,10 @@ namespace OuraRingDataIngest.ServiceInterface
                     if (authResponse.Failed)
                         _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse.ErrorMessage);
 
-                    var startDate = DateTime.Now.AddDays(-3);
+                    var startDate = DateTime.Now.AddDays(-2);
                     var endDate = DateTime.Now;
 
-                    var addExecutionResponse = await client.ApiAsync(new CreateExecution
+                    var addExecutionResponse = await _client.ApiAsync(new CreateExecution
                     {
                         StartDateTime = DateTime.Now,
                         StartQueryDateTime = startDate,
@@ -57,7 +58,7 @@ namespace OuraRingDataIngest.ServiceInterface
                         foreach (var item in heartRates.Data)
                         {
                             var index = heartRates.Data.ToList().IndexOf(item);
-                            var addHeartRateResponse = await client.ApiAsync(new CreateHeartRate
+                            var addHeartRateResponse = await _client.ApiAsync(new CreateHeartRate
                             {
                                 Bpm = item.Bpm,
                                 Source = item.Source,
@@ -67,7 +68,7 @@ namespace OuraRingDataIngest.ServiceInterface
                                 _logger.LogError($"HeartRateIngestService CreateHeartRate #{index} Failed: " + addHeartRateResponse.ErrorMessage);
                         }
 
-                    var updateExecution = await client.ApiAsync(new UpdateExecution
+                    var updateExecution = await _client.ApiAsync(new UpdateExecution
                     {
                         Id = addExecutionResponse.Response.Id,
                         EndDateTime = DateTime.Now,
