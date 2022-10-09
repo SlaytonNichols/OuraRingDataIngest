@@ -28,7 +28,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var client = new JsonApiClient("https://" + Environment.GetEnvironmentVariable("DEPLOY_API"));
+                    var client = new JsonApiClient("https://localhost:5001");
                     var authResponse = await client.ApiAsync(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
