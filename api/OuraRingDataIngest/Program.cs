@@ -1,6 +1,7 @@
 using OuraRingDataIngest.ServiceInterface;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddJsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"));
 
 var app = builder.Build();
 
