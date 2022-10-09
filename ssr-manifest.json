@@ -28,7 +28,7 @@
   "src/components/NavItem.vue?vue&type=script&setup=true&lang.ts": [],
   "src/components/NavLink.vue?vue&type=script&setup=true&lang.ts": [],
   "~icons/logos/github-icon": [],
-  "~icons/cib/markdown": [],
+  "~icons/eos-icons/job": [],
   "src/components/NavHeader.vue?vue&type=script&setup=true&lang.ts": [],
   "\u0000plugin-vue:export-helper": [],
   "src/components/NavFooter.vue": [],
@@ -44,93 +44,96 @@
   "src/routing.ts": [],
   "src/main.ts": [],
   "index.html": [],
-  "empty.f1cf6fc4.js": [],
-  "Admin.42292642.js": [],
-  "Forbidden.9f6b5cab.js": [],
-  "Profile.5f10d0f8.js": [],
-  "Signin.428cb03d.js": [],
-  "Signup.7dfc48a8.js": [],
-  "_...all_.aaef2ef8.js": [],
-  "Index.96c4771b.js": [],
+  "empty.3648b805.js": [],
+  "Admin.1e78ab56.js": [],
+  "Forbidden.2d32bd34.js": [],
+  "Profile.32ca0e21.js": [],
+  "Signin.d1d3cc60.js": [],
+  "Signup.b34bbfda.js": [],
+  "_...all_.244b627e.js": [],
+  "Index.5f41ad66.js": [],
   "src/layouts/empty.vue": [
-    "/assets/empty.f1cf6fc4.js"
+    "/assets/empty.3648b805.js"
   ],
   "~icons/mdi/shield-account": [
-    "/assets/Admin.42292642.js"
+    "/assets/Admin.1e78ab56.js"
   ],
   "src/pages/Admin.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Admin.42292642.js"
+    "/assets/Admin.1e78ab56.js"
   ],
   "src/pages/Admin.vue": [
-    "/assets/Admin.42292642.js"
+    "/assets/Admin.1e78ab56.js"
   ],
   "src/components/AppPage.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AppPage.vue_vue_type_script_setup_true_lang.494c7149.js"
+    "/assets/AppPage.vue_vue_type_script_setup_true_lang.500e9443.js"
   ],
   "src/components/form/SecondaryButton.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/SecondaryButton.vue_vue_type_script_setup_true_lang.c7fd4fcd.js"
+    "/assets/SecondaryButton.vue_vue_type_script_setup_true_lang.6be61e13.js"
   ],
   "~icons/mdi/chevron-right": [
-    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.122b2327.js"
+    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.ce313322.js"
+  ],
+  "~icons/cib/markdown": [
+    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.ce313322.js"
   ],
   "src/components/AppBreadcrumb.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.122b2327.js"
+    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.ce313322.js"
   ],
   "~icons/mdi/home": [
-    "/assets/home.64e877b4.js"
+    "/assets/home.3c932c84.js"
   ],
   "src/pages/Forbidden.vue": [
-    "/assets/Forbidden.9f6b5cab.js"
+    "/assets/Forbidden.2d32bd34.js"
   ],
   "../../../../../../@vite-plugin-pages/route-block": [
     "/assets/route-block.011d1056.js"
   ],
   "~icons/mdi/account-circle": [
-    "/assets/Profile.5f10d0f8.js"
+    "/assets/Profile.32ca0e21.js"
   ],
   "src/pages/Profile.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Profile.5f10d0f8.js"
+    "/assets/Profile.32ca0e21.js"
   ],
   "src/pages/Profile.vue": [
-    "/assets/Profile.5f10d0f8.js"
+    "/assets/Profile.32ca0e21.js"
   ],
   "src/pages/Signin.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Signin.428cb03d.js"
+    "/assets/Signin.d1d3cc60.js"
   ],
   "src/pages/Signin.vue": [
-    "/assets/Signin.428cb03d.js"
+    "/assets/Signin.d1d3cc60.js"
   ],
   "~icons/mdi/close-circle": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.8ece07f2.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.1db1e55a.js"
   ],
   "src/components/form/ErrorSummary.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.8ece07f2.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.1db1e55a.js"
   ],
   "src/components/form/TextInput.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.8ece07f2.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.1db1e55a.js"
   ],
   "src/components/form/Checkbox.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.8ece07f2.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.1db1e55a.js"
   ],
   "src/components/form/FormLoading.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.8ece07f2.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.1db1e55a.js"
   ],
   "src/components/form/PrimaryButton.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.8ece07f2.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.1db1e55a.js"
   ],
   "src/pages/Signup.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Signup.7dfc48a8.js"
+    "/assets/Signup.b34bbfda.js"
   ],
   "src/pages/Signup.vue": [
-    "/assets/Signup.7dfc48a8.js"
+    "/assets/Signup.b34bbfda.js"
   ],
   "~icons/mdi/arrow-left-thin": [
-    "/assets/_...all_.aaef2ef8.js"
+    "/assets/_...all_.244b627e.js"
   ],
   "src/pages/[...all].vue": [
-    "/assets/_...all_.aaef2ef8.js"
+    "/assets/_...all_.244b627e.js"
   ],
-  "src/pages/test/Index.vue": [
-    "/assets/Index.96c4771b.js"
+  "src/pages/executions/Index.vue": [
+    "/assets/Index.5f41ad66.js"
   ]
 }
