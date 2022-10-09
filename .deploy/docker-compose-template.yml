@@ -14,6 +14,7 @@ services:
       DEPLOY_CDN: ${DEPLOY_CDN}
       ConnectionStrings__DefaultConnection: ${DEFAULTCONNECTION}
       AuthKeyBase64: ${AUTHKEYBASE64}
+      Oura__Pat: ${Oura__Pat}
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
   "${APP_NAME}-migration":

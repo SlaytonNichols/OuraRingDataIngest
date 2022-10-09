@@ -144,6 +144,7 @@ jobs:
           DD_SITE: ${{ secrets.DD_SITE }}
           DEFAULTCONNECTION: ${{ secrets.DEFAULTCONNECTION }}
           AUTHKEYBASE64: ${{ secrets.AUTHKEYBASE64 }}
+          Oura__Pat: ${{ secrets.OURAPAT }}
         with:
           input: .deploy/docker-compose-template.yml
           output: .deploy/${{ github.event.repository.name }}-docker-compose.yml
@@ -166,12 +167,13 @@ jobs:
           USERNAME: ${{ secrets.DEPLOY_USERNAME }}
           AUTHKEYBASE64: ${{ secrets.AUTHKEYBASE64 }}
           CONNECTIONSTRINGS__DEFAULTCONNECTION: ${{ secrets.DEFAULTCONNECTION }}
+          Oura__Pat: ${{ secrets.OURAPAT }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           port: 22
-          envs: APPTOKEN,USERNAME,AUTHKEYBASE64,CONNECTIONSTRINGS__DEFAULTCONNECTION
+          envs: APPTOKEN,USERNAME,AUTHKEYBASE64,CONNECTIONSTRINGS__DEFAULTCONNECTION, Oura__Pat
           script: |
             echo $APPTOKEN | docker login ghcr.io -u $USERNAME --password-stdin
             docker-compose -f ~/.deploy/${{ github.event.repository.name }}-docker-compose.yml pull
