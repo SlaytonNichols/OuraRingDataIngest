@@ -13,7 +13,7 @@
           <ul class="flex flex-wrap items-center justify-end w-full">
             <NavItem>
               <NavLink :use-router="true" class="text-lg" href="/test">
-                <Markdown class="m-2"/> Test
+                <Executions class="m-2"/> Executions
               </NavLink>
             </NavItem>
             <NavItem>
@@ -33,5 +33,5 @@ import NavItem from "@/components/NavItem.vue";
 import NavLink from "@/components/NavLink.vue";
 import Linkedin from '~icons/logos/linkedin-icon'
 import Github from '~icons/logos/github-icon'
-import Markdown from '~icons/cib/markdown/'
+import Executions from '~icons/eos-icons/job/'
 </script>
