@@ -17,17 +17,11 @@ namespace OuraRingDataIngest.ServiceInterface
     public class HeartRateIngestService : BackgroundService
     {
         private readonly ILogger<HeartRateIngestService> _logger;
-        // private readonly JsonApiClient _client;
         public IServiceClient CreateClient() => new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"));
 
         public HeartRateIngestService(ILogger<HeartRateIngestService> logger)
         {
             _logger = logger;
-            // _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
-            // {
-            //     UseBasePath = "/api",
-            //     AlwaysSendBasicAuthHeader = true
-            // };
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -36,16 +30,8 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var baseUri = Environment.GetEnvironmentVariable("BASE_URI");
-                    _logger.LogInformation("BASE_URI " + baseUri);
-                    // var _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
-                    // {
-                    //     UseBasePath = "/api",
-                    //     AlwaysSendBasicAuthHeader = true
-                    // };
-                    var _client = CreateClient();
 
-                    _logger.LogInformation("JsonServiceClient " + _client.ToJson());
+                    var _client = CreateClient();
                     var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
                     var authResponse = new ApiResult<AuthenticateResponse>();
@@ -111,7 +97,6 @@ namespace OuraRingDataIngest.ServiceInterface
 
         private async Task<HeartRates> GetHeartRatesAsync(DateTime startDate, DateTime endDate)
         {
-            // var heartRates = new HeartRates();
             try
             {
                 _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Starting...");
@@ -130,7 +115,6 @@ namespace OuraRingDataIngest.ServiceInterface
                     });
                 }).ConfigAwait();
 
-                // heartRates = response.FromJson<HeartRates>();
                 _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Completed... Oura Ring API Response:" + response);
 
                 return response.FromJson<HeartRates>();
