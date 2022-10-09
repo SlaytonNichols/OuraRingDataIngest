@@ -10,6 +10,7 @@ using ServiceStack.Text;
 using ServiceStack.Configuration;
 using ServiceStack.Auth;
 using System.Linq;
+using System.Web;
 
 namespace OuraRingDataIngest.ServiceInterface
 {
