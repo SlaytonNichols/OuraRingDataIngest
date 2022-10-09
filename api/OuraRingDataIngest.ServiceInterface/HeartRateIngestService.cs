@@ -17,16 +17,16 @@ namespace OuraRingDataIngest.ServiceInterface
     public class HeartRateIngestService : BackgroundService
     {
         private readonly ILogger<HeartRateIngestService> _logger;
-        private readonly JsonApiClient _client;
+        // private readonly JsonApiClient _client;
 
-        public HeartRateIngestService(ILogger<HeartRateIngestService> logger, JsonApiClient client)
+        public HeartRateIngestService(ILogger<HeartRateIngestService> logger)
         {
             _logger = logger;
-            _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
-            {
-                UseBasePath = "/api",
-                AlwaysSendBasicAuthHeader = true
-            };
+            // _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
+            // {
+            //     UseBasePath = "/api",
+            //     AlwaysSendBasicAuthHeader = true
+            // };
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -37,8 +37,12 @@ namespace OuraRingDataIngest.ServiceInterface
                     _logger.LogInformation("HeartRateIngestService Starting...");
                     var baseUri = Environment.GetEnvironmentVariable("BASE_URI");
                     _logger.LogInformation("BASE_URI " + baseUri);
-                    var client = new JsonServiceClient(baseUri);
-                    _logger.LogInformation("JsonServiceClient " + client.ToJson());
+                    var _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
+                    {
+                        UseBasePath = "/api",
+                        AlwaysSendBasicAuthHeader = true
+                    };
+                    _logger.LogInformation("JsonServiceClient " + _client.ToJson());
                     var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
                     var authResponse = new ApiResult<AuthenticateResponse>();
