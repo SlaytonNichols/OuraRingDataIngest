@@ -28,7 +28,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
 
-                    var startDate = DateTime.Now.AddHours(-4);
+                    var startDate = DateTime.Now.AddHours(-3);
                     var endDate = DateTime.Now;
 
                     var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
