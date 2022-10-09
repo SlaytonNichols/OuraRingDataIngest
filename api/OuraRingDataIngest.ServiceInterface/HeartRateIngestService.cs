@@ -18,6 +18,7 @@ namespace OuraRingDataIngest.ServiceInterface
     {
         private readonly ILogger<HeartRateIngestService> _logger;
         // private readonly JsonApiClient _client;
+        public IServiceClient CreateClient() => new JsonServiceClient(Environment.GetEnvironmentVariable("BASE_URI"));
 
         public HeartRateIngestService(ILogger<HeartRateIngestService> logger)
         {
@@ -37,11 +38,12 @@ namespace OuraRingDataIngest.ServiceInterface
                     _logger.LogInformation("HeartRateIngestService Starting...");
                     var baseUri = Environment.GetEnvironmentVariable("BASE_URI");
                     _logger.LogInformation("BASE_URI " + baseUri);
-                    var _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
-                    {
-                        UseBasePath = "/api",
-                        AlwaysSendBasicAuthHeader = true
-                    };
+                    // var _client = new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
+                    // {
+                    //     UseBasePath = "/api",
+                    //     AlwaysSendBasicAuthHeader = true
+                    // };
+                    var _client = CreateClient();
                     _logger.LogInformation("JsonServiceClient " + _client.ToJson());
                     var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
