@@ -3,16 +3,18 @@ using ServiceStack.OrmLite;
 
 namespace OuraRingDataIngest.Migrations
 {
-    public class Migration3 : MigrationBase
+    public class Migration4 : MigrationBase
     {
         public override void Up()
         {
             Db.ExecuteSql(@"
-IF NOT EXISTS(SELECT 1 FROM sys.tables t where t.name = 'Test')
+IF NOT EXISTS(SELECT 1 FROM sys.tables t where t.name = 'HeartRate')
 BEGIN
-	CREATE TABLE [oura].[Test](
+	CREATE TABLE [oura].[HeartRate](
 		[Id] [int] IDENTITY(1,1) NOT NULL,
-		[Test] VARCHAR(50) NOT NULL,
+		[Source] VARCHAR(50) NOT NULL,
+        [Bpm] INT NOT NULL,
+        [Timestamp] DATETIME NOT NULL,
 	PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
@@ -21,10 +23,10 @@ BEGIN
 END
             ");
             Db.ExecuteSql(@"
-IF NOT EXISTS(SELECT 1 FROM oura.Test WHERE Id = 1)
+IF NOT EXISTS(SELECT 1 FROM oura.HeartRate WHERE Id = 1)
 BEGIN
-    INSERT INTO [oura].[Post] ([Test])
-    VALUES (N'This is a test')
+    INSERT INTO [oura].[HeartRate] ([Source], [Bpm], [Timestamp])
+    VALUES (N'awake', 60, '2021-01-01 00:00:00')
 END
             ");
         }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using ServiceStack.Text;
 using ServiceStack.Configuration;
+using ServiceStack.Auth;
 
 namespace OuraRingDataIngest.ServiceInterface
 {
@@ -43,10 +44,31 @@ namespace OuraRingDataIngest.ServiceInterface
                         });
                     }).ConfigAwait();
 
-
                     _logger.LogInformation(response);
+
+                    var heartRates = response.FromJson<HeartRates>();
+
+                    var client = new JsonServiceClient(Environment.GetEnvironmentVariable("DEPLOY_API"));
+                    AuthenticateResponse authResponse = client.Post(new Authenticate
+                    {
+                        provider = CredentialsAuthProvider.Name,
+                        UserName = Environment.GetEnvironmentVariable("USERNAME"),
+                        Password = Environment.GetEnvironmentVariable("PASSWORD"),
+                        RememberMe = true,
+                    });
+
+                    foreach (var item in heartRates.Data)
+                    {
+                        await client.PostAsync(new CreateHeartRate
+                        {
+                            Bpm = item.Bpm,
+                            Source = item.Source,
+                            Timestamp = item.Timestamp
+                        });
+                    }
+
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
+                    await Task.Delay(TimeSpan.FromDays(8), stoppingToken);
                 }
             }
             catch (System.Exception ex)
