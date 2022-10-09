@@ -32,7 +32,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
 
-                    var startDate = DateTime.Now.AddHours(-2);
+                    var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
                     var authResponse = new ApiResult<AuthenticateResponse>();
                     var addExecutionResponse = new ApiResult<CreateResponse>();

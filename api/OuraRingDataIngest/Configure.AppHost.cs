@@ -39,6 +39,7 @@ public class AppHost : AppHostBase, IHostingStartup
         //ServiceStack
         SetConfig(new HostConfig
         {
+            WebHostUrl = Environment.GetEnvironmentVariable("BASE_URI"),
         });
 
 
