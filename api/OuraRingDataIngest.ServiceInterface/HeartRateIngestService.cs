@@ -28,8 +28,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var baseUrl = "localhost:5000";//Environment.GetEnvironmentVariable("DEPLOY_API");
-                    var client = new JsonApiClient($"http://{baseUrl}");
+                    var client = new JsonApiClient("https://" + Environment.GetEnvironmentVariable("DEPLOY_API"));
                     AuthenticateResponse authResponse = await client.PostAsync(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
@@ -38,19 +37,20 @@ namespace OuraRingDataIngest.ServiceInterface
                         RememberMe = true,
                     });
 
-                    var startDate = DateTime.UtcNow.AddHours(-4);
-                    var endDate = DateTime.UtcNow;
+                    var startDate = $"{DateTime.Now.AddHours(-8):yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B");
+                    var endDate = $"{DateTime.Now:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B");
 
                     var executionId = await client.PostAsync(new CreateExecution
                     {
-                        StartDateTime = DateTime.UtcNow,
-                        StartQueryDateTime = startDate,
-                        EndQueryDateTime = endDate
+                        StartDateTime = DateTime.Now,
+                        StartQueryDateTime = DateTime.Now.AddHours(-8),
+                        EndQueryDateTime = DateTime.Now
                     });
 
                     var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
-                    heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", $"{startDate:yyyy-MM-ddThh:mm:ss}", false);
-                    heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", $"{endDate:yyyy-MM-ddThh:mm:ss}", false);
+
+                    heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", $"{startDate}", false);
+                    heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", $"{endDate}", false);
 
                     var response = await heartRateUrl.GetJsonFromUrlAsync(x =>
                     {
@@ -83,7 +83,7 @@ namespace OuraRingDataIngest.ServiceInterface
                     await client.PatchAsync(new UpdateExecution
                     {
                         Id = executionId.Id,
-                        EndDateTime = DateTime.UtcNow
+                        EndDateTime = DateTime.Now
                     });
                     await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
                 }
