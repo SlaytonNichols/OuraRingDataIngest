@@ -5,7 +5,7 @@
 
 const DEPLOY_API = 'https://$DEPLOY_API' // e.g. 'https://vue-ssg-api.jamstacks.net'
 const USE_DEV_PROXY = false // Change to use CORS-free dev proxy at: http://localhost:3000/api
-const DEV_API = 'http://localhost:5000'
+const DEV_API = 'http://localhost:5002'
 
 import { defineConfig } from "vite"
 import * as fs from "fs"
