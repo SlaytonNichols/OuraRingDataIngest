@@ -169,9 +169,7 @@ jobs:
           USERNAME: ${{ secrets.DEPLOY_USERNAME }}
           AUTHKEYBASE64: ${{ secrets.AUTHKEYBASE64 }}
           CONNECTIONSTRINGS__DEFAULTCONNECTION: ${{ secrets.DEFAULTCONNECTION }}
-          Oura__Pat: ${{ secrets.OURAPAT }}
-          EMAIL: ${{ secrets.EMAIL }}
-          PASSWORD: ${{ secrets.PASSWORD }}          
+          Oura__Pat: ${{ secrets.OURAPAT }}         
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
