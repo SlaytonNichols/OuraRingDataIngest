@@ -44,102 +44,351 @@
   "src/routing.ts": [],
   "src/main.ts": [],
   "index.html": [],
-  "empty.c2df70e2.js": [],
-  "Admin.016c128a.js": [],
-  "Forbidden.a4098111.js": [],
-  "Profile.f22a35e0.js": [],
-  "Signin.39f8ec7a.js": [],
-  "Signup.93ef6c79.js": [],
-  "_...all_.ae2a61e3.js": [],
-  "Index.5ed99131.js": [],
+  "empty.8b331352.js": [],
+  "Admin.339763c9.js": [],
+  "Forbidden.d33a28ea.js": [],
+  "Profile.8b6919f3.js": [],
+  "Signin.755212a7.js": [],
+  "Signup.9a89db4d.js": [],
+  "_...all_.ffce29de.js": [],
+  "Index.bc4703b1.js": [],
   "src/layouts/empty.vue": [
-    "/assets/empty.c2df70e2.js"
+    "/assets/empty.8b331352.js"
   ],
   "~icons/mdi/shield-account": [
-    "/assets/Admin.016c128a.js"
+    "/assets/Admin.339763c9.js"
   ],
   "src/pages/Admin.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Admin.016c128a.js"
+    "/assets/Admin.339763c9.js"
   ],
   "src/pages/Admin.vue": [
-    "/assets/Admin.016c128a.js"
+    "/assets/Admin.339763c9.js"
   ],
   "src/components/AppPage.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AppPage.vue_vue_type_script_setup_true_lang.6612b484.js"
+    "/assets/AppPage.vue_vue_type_script_setup_true_lang.8317d686.js"
   ],
   "src/components/form/SecondaryButton.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/SecondaryButton.vue_vue_type_script_setup_true_lang.443f890f.js"
+    "/assets/SecondaryButton.vue_vue_type_script_setup_true_lang.58c24860.js"
   ],
   "~icons/mdi/chevron-right": [
-    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.54ec6705.js"
+    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.56caa97e.js"
   ],
   "~icons/cib/markdown": [
-    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.54ec6705.js"
+    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.56caa97e.js"
   ],
   "src/components/AppBreadcrumb.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.54ec6705.js"
+    "/assets/AppBreadcrumb.vue_vue_type_script_setup_true_lang.56caa97e.js"
   ],
   "~icons/mdi/home": [
-    "/assets/home.c703fcb5.js"
+    "/assets/home.ad457c71.js"
   ],
   "src/pages/Forbidden.vue": [
-    "/assets/Forbidden.a4098111.js"
+    "/assets/Forbidden.d33a28ea.js"
   ],
   "../../../../../../@vite-plugin-pages/route-block": [
     "/assets/route-block.011d1056.js"
   ],
   "~icons/mdi/account-circle": [
-    "/assets/Profile.f22a35e0.js"
+    "/assets/Profile.8b6919f3.js"
   ],
   "src/pages/Profile.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Profile.f22a35e0.js"
+    "/assets/Profile.8b6919f3.js"
   ],
   "src/pages/Profile.vue": [
-    "/assets/Profile.f22a35e0.js"
+    "/assets/Profile.8b6919f3.js"
   ],
   "src/pages/Signin.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Signin.39f8ec7a.js"
+    "/assets/Signin.755212a7.js"
   ],
   "src/pages/Signin.vue": [
-    "/assets/Signin.39f8ec7a.js"
+    "/assets/Signin.755212a7.js"
   ],
   "~icons/mdi/close-circle": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.c9021c8f.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.33a3b67a.js"
   ],
   "src/components/form/ErrorSummary.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.c9021c8f.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.33a3b67a.js"
   ],
   "src/components/form/TextInput.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.c9021c8f.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.33a3b67a.js"
   ],
   "src/components/form/Checkbox.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.c9021c8f.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.33a3b67a.js"
   ],
   "src/components/form/FormLoading.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.c9021c8f.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.33a3b67a.js"
   ],
   "src/components/form/PrimaryButton.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.c9021c8f.js"
+    "/assets/PrimaryButton.vue_vue_type_script_setup_true_lang.33a3b67a.js"
   ],
   "src/pages/Signup.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Signup.93ef6c79.js"
+    "/assets/Signup.9a89db4d.js"
   ],
   "src/pages/Signup.vue": [
-    "/assets/Signup.93ef6c79.js"
+    "/assets/Signup.9a89db4d.js"
   ],
   "~icons/mdi/arrow-left-thin": [
-    "/assets/_...all_.ae2a61e3.js"
+    "/assets/_...all_.ffce29de.js"
   ],
   "src/pages/[...all].vue": [
-    "/assets/_...all_.ae2a61e3.js"
+    "/assets/_...all_.ffce29de.js"
   ],
   "src/stores/executions.ts": [
-    "/assets/Index.5ed99131.js"
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/markdown-it/index.js?commonjs-module": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/markdown-it/lib/common/utils.js?commonjs-exports": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/markdown-it/lib/common/entities.js?commonjs-module": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/entities/lib/maps/entities.json": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/common/entities.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/uc.micro/categories/P/regex.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/mdurl/index.js?commonjs-exports": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/mdurl/encode.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/mdurl/decode.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/mdurl/format.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/mdurl/parse.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/mdurl/index.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/uc.micro/index.js?commonjs-exports": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/uc.micro/properties/Any/regex.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/uc.micro/categories/Cc/regex.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/uc.micro/categories/Cf/regex.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/uc.micro/categories/Z/regex.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/uc.micro/index.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/common/utils.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/markdown-it/lib/helpers/index.js?commonjs-exports": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/helpers/parse_link_label.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/helpers/parse_link_destination.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/helpers/parse_link_title.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/helpers/index.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/renderer.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/ruler.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/normalize.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/block.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/inline.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/linkify.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/replacements.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/smartquotes.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/text_join.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/token.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_core/state_core.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/parser_core.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/table.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/code.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/fence.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/blockquote.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/hr.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/list.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/reference.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/common/html_blocks.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/markdown-it/lib/common/html_re.js?commonjs-exports": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/common/html_re.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/html_block.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/heading.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/lheading.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/paragraph.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_block/state_block.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/parser_block.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/text.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/linkify.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/newline.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/escape.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/backticks.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/markdown-it/lib/rules_inline/strikethrough.js?commonjs-exports": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/strikethrough.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/markdown-it/lib/rules_inline/emphasis.js?commonjs-exports": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/emphasis.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/link.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/image.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/autolink.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/html_inline.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/entity.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/balance_pairs.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/fragments_join.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/rules_inline/state_inline.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/parser_inline.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/linkify-it/lib/re.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/linkify-it/index.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/punycode/punycode.es6.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/punycode/punycode.es6.js?commonjs-proxy": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/presets/default.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/presets/zero.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/presets/commonmark.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/lib/index.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/markdown-it/index.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/json-to-markdown-table/app.js?commonjs-module": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "\u0000/home/runner/work/OuraRingDataIngest/OuraRingDataIngest/ui/node_modules/lodash/lodash.js?commonjs-module": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/lodash/lodash.js": [
+    "/assets/Index.bc4703b1.js"
+  ],
+  "node_modules/json-to-markdown-table/app.js": [
+    "/assets/Index.bc4703b1.js"
   ],
   "src/pages/executions/Index.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/Index.5ed99131.js"
+    "/assets/Index.bc4703b1.js"
   ],
   "src/pages/executions/Index.vue": [
-    "/assets/Index.5ed99131.js"
+    "/assets/Index.bc4703b1.js"
   ]
 }
