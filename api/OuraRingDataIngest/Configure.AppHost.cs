@@ -36,7 +36,7 @@ public class AppHost : AppHostBase, IHostingStartup
     {
         Plugins.Add(new OpenApiFeature());
         Plugins.Add(new PostmanFeature());
-        //ServiceStack
+
         SetConfig(new HostConfig
         {
         });
