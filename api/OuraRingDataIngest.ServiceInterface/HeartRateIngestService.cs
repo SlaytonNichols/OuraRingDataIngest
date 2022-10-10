@@ -44,7 +44,7 @@ namespace OuraRingDataIngest.ServiceInterface
                     var updateExecutionResponse = new ApiResult<UpdateResponse>();
                     var createHeartRateResponse = new ApiResult<IdResponse>();
 
-                    authResponse = _client.Api(new Authenticate
+                    authResponse = await _client.ApiAsync(new Authenticate
                     {
                         provider = CredentialsAuthProvider.Name,
                         UserName = Environment.GetEnvironmentVariable("EMAIL"),
