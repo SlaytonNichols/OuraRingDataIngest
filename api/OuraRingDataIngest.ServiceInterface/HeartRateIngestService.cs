@@ -88,7 +88,11 @@ namespace OuraRingDataIngest.ServiceInterface
                             _logger.LogError("HeartRateIngestService UpdateExecution Failed: " + updateExecutionResponse.ErrorMessage);
                     }
                     else
+                    {
                         _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse.ErrorMessage);
+                        continue;
+                    }
+
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
                     await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
