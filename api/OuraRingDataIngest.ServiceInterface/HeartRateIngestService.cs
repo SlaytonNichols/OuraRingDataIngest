@@ -17,7 +17,7 @@ namespace OuraRingDataIngest.ServiceInterface
     public class HeartRateIngestService : BackgroundService
     {
         private readonly ILogger<HeartRateIngestService> _logger;
-        public IServiceClient CreateClient() => new JsonHttpClient(Environment.GetEnvironmentVariable("BASE_URI"))
+        public IServiceClient CreateClient() => new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
         {
             UserName = Environment.GetEnvironmentVariable("EMAIL"),
             Password = Environment.GetEnvironmentVariable("PASSWORD"),
@@ -90,8 +90,6 @@ namespace OuraRingDataIngest.ServiceInterface
                     else
                     {
                         _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse.ErrorMessage);
-                        var helloResponse = await _client.ApiAsync(new Hello { Name = "Test" });
-                        _logger.LogInformation("Hello Response " + helloResponse.Response.ToJson());
                         _logger.LogInformation("HeartRateIngestService Completed.");
                         continue;
                     }
