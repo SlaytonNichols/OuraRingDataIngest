@@ -36,7 +36,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    await Task.Delay(TimeSpan.FromMinutes(1));
+
                     var _client = CreateClient();
                     var startDate = DateTime.Now.AddDays(-1);
                     var endDate = DateTime.Now;
