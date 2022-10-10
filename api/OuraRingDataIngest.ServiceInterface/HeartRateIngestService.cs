@@ -21,7 +21,6 @@ namespace OuraRingDataIngest.ServiceInterface
         {
             UserName = Environment.GetEnvironmentVariable("EMAIL"),
             Password = Environment.GetEnvironmentVariable("PASSWORD"),
-            AlwaysSendBasicAuthHeader = true,
         };
 
 
@@ -47,7 +46,7 @@ namespace OuraRingDataIngest.ServiceInterface
 
                     authResponse = await _client.ApiAsync(new Authenticate
                     {
-                        provider = BasicAuthProvider.Name,
+                        provider = CredentialsAuthProvider.Name,
                         UserName = Environment.GetEnvironmentVariable("EMAIL"),
                         Password = Environment.GetEnvironmentVariable("PASSWORD"),
                         RememberMe = true,
