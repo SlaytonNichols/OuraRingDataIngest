@@ -54,7 +54,7 @@ namespace OuraRingDataIngest.ServiceInterface
 
                     if (authResponse.Succeeded)
                     {
-                        addExecutionResponse = await _client.ApiAsync(new CreateExecution
+                        addExecutionResponse = _client.Api(new CreateExecution
                         {
                             StartDateTime = DateTime.Now,
                             StartQueryDateTime = startDate,
@@ -63,12 +63,12 @@ namespace OuraRingDataIngest.ServiceInterface
                         if (addExecutionResponse.Failed)
                             _logger.LogError("HeartRateIngestService CreateExecution Failed: " + addExecutionResponse.ErrorMessage);
 
-                        var heartRates = await GetHeartRatesAsync(startDate, endDate);
+                        var heartRates = GetHeartRates(startDate, endDate);
                         if (heartRates.Errors == null)
                             foreach (var item in heartRates.Data)
                             {
                                 var index = heartRates.Data.ToList().IndexOf(item);
-                                createHeartRateResponse = await _client.ApiAsync(new CreateHeartRate
+                                createHeartRateResponse = _client.Api(new CreateHeartRate
                                 {
                                     Bpm = item.Bpm,
                                     Source = item.Source,
@@ -78,7 +78,7 @@ namespace OuraRingDataIngest.ServiceInterface
                                     _logger.LogError($"HeartRateIngestService CreateHeartRate #{index} Failed: " + createHeartRateResponse.ErrorMessage);
                             }
 
-                        updateExecutionResponse = await _client.ApiAsync(new UpdateExecution
+                        updateExecutionResponse = _client.Api(new UpdateExecution
                         {
                             Id = addExecutionResponse.Response.Id,
                             EndDateTime = DateTime.Now,
@@ -104,7 +104,7 @@ namespace OuraRingDataIngest.ServiceInterface
             }
         }
 
-        private async Task<HeartRates> GetHeartRatesAsync(DateTime startDate, DateTime endDate)
+        private HeartRates GetHeartRates(DateTime startDate, DateTime endDate)
         {
             try
             {
@@ -115,14 +115,14 @@ namespace OuraRingDataIngest.ServiceInterface
                 heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", $"{startDate:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B"), false);
                 heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", $"{endDate:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B"), false);
 
-                var response = await heartRateUrl.GetJsonFromUrlAsync(x =>
+                var response = heartRateUrl.GetJsonFromUrl(x =>
                 {
                     x.With(req =>
                     {
                         req.AddHeader("Authorization", "Bearer " + Environment.GetEnvironmentVariable("Oura__Pat"));
                         req.AddHeader("Accept", "application/json");
                     });
-                }).ConfigAwait();
+                });
 
                 _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Completed... Oura Ring API Response:" + response);
 
