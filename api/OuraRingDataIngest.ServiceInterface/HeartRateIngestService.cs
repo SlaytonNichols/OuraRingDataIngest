@@ -54,7 +54,7 @@ namespace OuraRingDataIngest.ServiceInterface
 
                     if (authResponse.Succeeded)
                     {
-                        addExecutionResponse = await _client.ApiAsync(new CreateExecution
+                        addExecutionResponse = _client.Api(new CreateExecution
                         {
                             StartDateTime = DateTime.Now,
                             StartQueryDateTime = startDate,
