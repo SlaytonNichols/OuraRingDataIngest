@@ -18,6 +18,7 @@
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/typography": "^0.5.4",
     "@vueuse/core": "^9.1.1",
+    "json-to-markdown-table": "^1.0.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.21",
     "swrv": "^1.0.0-beta.8",
