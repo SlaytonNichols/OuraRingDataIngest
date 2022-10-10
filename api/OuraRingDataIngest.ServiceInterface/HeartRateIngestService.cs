@@ -50,7 +50,7 @@ namespace OuraRingDataIngest.ServiceInterface
                         UserName = Environment.GetEnvironmentVariable("EMAIL"),
                         Password = Environment.GetEnvironmentVariable("PASSWORD"),
                         RememberMe = true,
-                    });
+                    }).ConfigAwait();
 
                     if (authResponse.Succeeded)
                     {
@@ -59,11 +59,11 @@ namespace OuraRingDataIngest.ServiceInterface
                             StartDateTime = DateTime.Now,
                             StartQueryDateTime = startDate,
                             EndQueryDateTime = endDate
-                        });
+                        }).ConfigAwait();
                         if (addExecutionResponse.Failed)
                             _logger.LogError("HeartRateIngestService CreateExecution Failed: " + addExecutionResponse.ErrorMessage);
 
-                        var heartRates = await GetHeartRatesAsync(startDate, endDate);
+                        var heartRates = await GetHeartRatesAsync(startDate, endDate).ConfigAwait();
                         if (heartRates.Errors == null)
                             foreach (var item in heartRates.Data)
                             {
@@ -73,7 +73,7 @@ namespace OuraRingDataIngest.ServiceInterface
                                     Bpm = item.Bpm,
                                     Source = item.Source,
                                     Timestamp = item.Timestamp
-                                });
+                                }).ConfigAwait();
                                 if (createHeartRateResponse.Failed)
                                     _logger.LogError($"HeartRateIngestService CreateHeartRate #{index} Failed: " + createHeartRateResponse.ErrorMessage);
                             }
@@ -83,7 +83,7 @@ namespace OuraRingDataIngest.ServiceInterface
                             Id = addExecutionResponse.Response.Id,
                             EndDateTime = DateTime.Now,
                             RecordsInserted = heartRates.Data.ToList().Count()
-                        });
+                        }).ConfigAwait();
                         if (updateExecutionResponse.Failed)
                             _logger.LogError("HeartRateIngestService UpdateExecution Failed: " + updateExecutionResponse.ErrorMessage);
                     }
