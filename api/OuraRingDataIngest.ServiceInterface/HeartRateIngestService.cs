@@ -24,13 +24,6 @@ namespace OuraRingDataIngest.ServiceInterface
     public class HeartRateIngestService : BackgroundService
     {
         private readonly ILogger<HeartRateIngestService> _logger;
-        public IServiceClient CreateClient() => new JsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"))
-        {
-            UserName = Environment.GetEnvironmentVariable("EMAIL"),
-            Password = Environment.GetEnvironmentVariable("PASSWORD"),
-        };
-
-
         public HeartRateIngestService(ILogger<HeartRateIngestService> logger)
         {
             _logger = logger;
@@ -42,57 +35,16 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-
-                    var _client = CreateClient();
-                    var startDate = DateTime.Now.AddDays(-1);
+                    var startDate = DateTime.Now.AddDays(-3);
                     var endDate = DateTime.Now;
-                    var authResponse = new ApiResult<AuthenticateResponse>();
-                    var addExecutionResponse = new ApiResult<CreateResponse>();
-                    var updateExecutionResponse = new ApiResult<UpdateResponse>();
-                    var createHeartRateResponse = new ApiResult<IdResponse>();
 
-                    authResponse = await _client.ApiAsync(new Authenticate
-                    {
-                        provider = CredentialsAuthProvider.Name,
-                        UserName = Environment.GetEnvironmentVariable("EMAIL"),
-                        Password = Environment.GetEnvironmentVariable("PASSWORD"),
-                        RememberMe = true,
-                    }).ConfigAwait();
+                    var heartRates = await GetHeartRatesAsync(startDate, endDate);
 
-                    if (authResponse.Succeeded)
-                    {
-                        addExecutionResponse = await _client.ApiAsync(new CreateExecution
-                        {
-                            StartDateTime = DateTime.Now,
-                            StartQueryDateTime = startDate,
-                            EndQueryDateTime = endDate
-                        }).ConfigAwait();
-                        if (addExecutionResponse.Failed)
-                            _logger.LogError("HeartRateIngestService CreateExecution Failed: " + addExecutionResponse.ErrorMessage);
-
-                        var heartRates = await GetHeartRatesAsync(startDate, endDate).ConfigAwait();
-
-                        if (heartRates.Errors == null)
-                            await WriteJsonToAdls(heartRates);
-
-                        updateExecutionResponse = await _client.ApiAsync(new UpdateExecution
-                        {
-                            Id = addExecutionResponse.Response.Id,
-                            EndDateTime = DateTime.Now,
-                            RecordsInserted = heartRates.Data.ToList().Count()
-                        }).ConfigAwait();
-                        if (updateExecutionResponse.Failed)
-                            _logger.LogError("HeartRateIngestService UpdateExecution Failed: " + updateExecutionResponse.ErrorMessage);
-                    }
-                    else
-                    {
-                        _logger.LogError("HeartRateIngestService Authenticate Failed: " + authResponse.ErrorMessage);
-                        _logger.LogInformation("HeartRateIngestService Completed.");
-                        continue;
-                    }
+                    if (heartRates.Errors == null)
+                        await WriteJsonToAdls(heartRates);
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
+                    await Task.Delay(TimeSpan.FromHours(3), stoppingToken);
                 }
             }
             catch (System.Exception ex)
@@ -142,14 +94,13 @@ namespace OuraRingDataIngest.ServiceInterface
                                      "snadls",
                                      Environment.GetEnvironmentVariable("CLIENTID"),
                                      Environment.GetEnvironmentVariable("CLIENT_SECRET"),
-                                     Environment.GetEnvironmentVariable("TENENTID"));
+                                     Environment.GetEnvironmentVariable("TENANTID"));
 
             var ouraring = dataLakeClient.GetFileSystemClient("ouraring");
             var heartrates = ouraring.GetDirectoryClient("heartrates");
             if (!heartrates.Exists())
-            {
                 await heartrates.CreateAsync();
-            }
+
             File.WriteAllText(@$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json", heartRates.ToJson());
             await heartrates.CreateFileAsync($"{DateTime.Now:yyyy-MM-dd-HH-mm}.json");
             File.Delete(@$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json");
