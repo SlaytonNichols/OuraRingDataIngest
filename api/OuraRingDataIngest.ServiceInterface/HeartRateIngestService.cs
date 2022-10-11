@@ -44,7 +44,7 @@ namespace OuraRingDataIngest.ServiceInterface
                         await WriteJsonToAdls(heartRates);
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await Task.Delay(TimeSpan.FromHours(3), stoppingToken);
+                    await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
                 }
             }
             catch (System.Exception ex)
