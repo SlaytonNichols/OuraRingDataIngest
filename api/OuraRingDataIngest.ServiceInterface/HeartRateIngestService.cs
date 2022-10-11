@@ -11,6 +11,13 @@ using ServiceStack.Configuration;
 using ServiceStack.Auth;
 using System.Linq;
 using System.Web;
+using Azure;
+using Azure.Storage.Files.DataLake;
+using Azure.Storage.Files.DataLake.Models;
+using Azure.Storage;
+using System.IO;
+using Azure.Identity;
+using Azure.Core;
 
 namespace OuraRingDataIngest.ServiceInterface
 {
@@ -64,19 +71,9 @@ namespace OuraRingDataIngest.ServiceInterface
                             _logger.LogError("HeartRateIngestService CreateExecution Failed: " + addExecutionResponse.ErrorMessage);
 
                         var heartRates = await GetHeartRatesAsync(startDate, endDate).ConfigAwait();
+
                         if (heartRates.Errors == null)
-                            foreach (var item in heartRates.Data)
-                            {
-                                var index = heartRates.Data.ToList().IndexOf(item);
-                                createHeartRateResponse = await _client.ApiAsync(new CreateHeartRate
-                                {
-                                    Bpm = item.Bpm,
-                                    Source = item.Source,
-                                    Timestamp = item.Timestamp
-                                }).ConfigAwait();
-                                if (createHeartRateResponse.Failed)
-                                    _logger.LogError($"HeartRateIngestService CreateHeartRate #{index} Failed: " + createHeartRateResponse.ErrorMessage);
-                            }
+                            await WriteJsonToAdls(heartRates);
 
                         updateExecutionResponse = await _client.ApiAsync(new UpdateExecution
                         {
@@ -136,6 +133,38 @@ namespace OuraRingDataIngest.ServiceInterface
                     Errors = new List<string> { ex.Message }
                 };
             }
+        }
+
+        private async Task WriteJsonToAdls(HeartRates heartRates)
+        {
+            var dataLakeClient = new DataLakeServiceClient(new Uri("https://snadls.blob.core.windows.net"));
+            GetDataLakeServiceClient(ref dataLakeClient,
+                                     "snadls",
+                                     Environment.GetEnvironmentVariable("CLIENTID"),
+                                     Environment.GetEnvironmentVariable("CLIENT_SECRET"),
+                                     Environment.GetEnvironmentVariable("TENENTID"));
+
+            var ouraring = dataLakeClient.GetFileSystemClient("ouraring");
+            var heartrates = ouraring.GetDirectoryClient("heartrates");
+            if (!heartrates.Exists())
+            {
+                await heartrates.CreateAsync();
+            }
+            File.WriteAllText(@$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json", heartRates.ToJson());
+            await heartrates.CreateFileAsync($"{DateTime.Now:yyyy-MM-dd-HH-mm}.json");
+            File.Delete(@$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json");
+        }
+
+        public static void GetDataLakeServiceClient(ref DataLakeServiceClient dataLakeServiceClient,
+    String accountName, String clientID, string clientSecret, string tenantID)
+        {
+
+            TokenCredential credential = new ClientSecretCredential(
+                tenantID, clientID, clientSecret, new TokenCredentialOptions());
+
+            string dfsUri = "https://snadls.dfs.core.windows.net";
+
+            dataLakeServiceClient = new DataLakeServiceClient(new Uri(dfsUri), credential);
         }
     }
 }

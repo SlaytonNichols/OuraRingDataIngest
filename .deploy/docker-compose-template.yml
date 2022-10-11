@@ -19,6 +19,9 @@ services:
       PASSWORD: ${PASSWORD}
       SERVICESTACK_LICENSE: ${SERVICESTACK_LICENSE}
       BASE_URI: ${BASE_URI}
+      CLIENTID: ${CLIENTID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      TENANTID: ${TENANTID}
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
   "${APP_NAME}-migration":

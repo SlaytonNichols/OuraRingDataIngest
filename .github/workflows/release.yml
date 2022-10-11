@@ -149,6 +149,9 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           SERVICESTACK_LICENSE: ${{ secrets.SERVICESTACK_LICENSE }}
           BASE_URI: ${{ secrets.BASE_URI }}
+          CLIENTID: ${{ secrets.CLIENTID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          TENANTID: ${{ secrets.TENANTID }}
         with:
           input: .deploy/docker-compose-template.yml
           output: .deploy/${{ github.event.repository.name }}-docker-compose.yml
@@ -173,7 +176,10 @@ jobs:
           CONNECTIONSTRINGS__DEFAULTCONNECTION: ${{ secrets.DEFAULTCONNECTION }}
           Oura__Pat: ${{ secrets.OURAPAT }}  
           SERVICESTACK_LICENSE: ${{ secrets.SERVICESTACK_LICENSE }}  
-          BASE_URI: ${{ secrets.BASE_URI }}     
+          BASE_URI: ${{ secrets.BASE_URI }}  
+          CLIENTID: ${{ secrets.CLIENTID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          TENANTID: ${{ secrets.TENANTID }}   
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}

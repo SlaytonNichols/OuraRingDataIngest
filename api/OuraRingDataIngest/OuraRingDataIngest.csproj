@@ -24,6 +24,8 @@
   </Target>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.7.0" />
+    <PackageReference Include="Azure.Storage.Files.DataLake" Version="12.11.0" />
     <PackageReference Include="ServiceStack" Version="6.3.0" />
     <PackageReference Include="ServiceStack.Api.OpenApi.Core" Version="6.3.0" />
     <PackageReference Include="ServiceStack.Client" Version="6.3.0" />
@@ -33,7 +35,6 @@
     <PackageReference Include="ServiceStack.Server" Version="6.3.0" />
     <PackageReference Include="ServiceStack.Text" Version="6.3.0" />
     <PackageReference Include="ServiceStack.Api.OpenApi" Version="6.3.0" />
-
   </ItemGroup>
 
   <ItemGroup>
