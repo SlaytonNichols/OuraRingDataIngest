@@ -35,7 +35,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var startDate = DateTime.Now.AddDays(-3);
+                    var startDate = DateTime.Now.AddHours(-8);
                     var endDate = DateTime.Now;
 
                     var heartRates = await GetHeartRatesAsync(startDate, endDate);
@@ -44,7 +44,7 @@ namespace OuraRingDataIngest.ServiceInterface
                         await WriteJsonToAdls(heartRates);
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
+                    await Task.Delay(TimeSpan.FromHours(4), stoppingToken);
                 }
             }
             catch (System.Exception ex)
@@ -101,9 +101,18 @@ namespace OuraRingDataIngest.ServiceInterface
             if (!heartrates.Exists())
                 await heartrates.CreateAsync();
 
-            File.WriteAllText(@$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json", heartRates.ToJson());
-            await heartrates.CreateFileAsync($"{DateTime.Now:yyyy-MM-dd-HH-mm}.json");
-            File.Delete(@$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json");
+            var fileName = @$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json";
+            File.WriteAllText(fileName, heartRates.ToJson());
+            var file = heartrates.CreateFile(fileName);
+            var fileClient = heartrates.GetFileClient(fileName);
+            FileStream fileStream = File.OpenRead(fileName);
+
+            long fileSize = fileStream.Length;
+
+            await fileClient.AppendAsync(fileStream, offset: 0);
+
+            await fileClient.FlushAsync(position: fileSize);
+            File.Delete(fileName);
         }
 
         public static void GetDataLakeServiceClient(ref DataLakeServiceClient dataLakeServiceClient,
