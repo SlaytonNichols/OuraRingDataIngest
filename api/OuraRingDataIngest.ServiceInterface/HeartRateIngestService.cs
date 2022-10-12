@@ -7,17 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using ServiceStack.Text;
-using ServiceStack.Configuration;
-using ServiceStack.Auth;
 using System.Linq;
-using System.Web;
-using Azure;
 using Azure.Storage.Files.DataLake;
-using Azure.Storage.Files.DataLake.Models;
-using Azure.Storage;
 using System.IO;
 using Azure.Identity;
 using Azure.Core;
+using NCrontab;
 
 namespace OuraRingDataIngest.ServiceInterface
 {
@@ -35,7 +30,8 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var startDate = DateTime.SpecifyKind(DateTime.Now.AddDays(-5), DateTimeKind.Local);
+                    // var s = CrontabSchedule.Parse("* * 0,9,18 ? * SUN,MON,TUE,WED,THU,FRI,SAT *");
+                    var startDate = DateTime.SpecifyKind(DateTime.Now.AddHours(-8), DateTimeKind.Local);
                     var endDate = DateTime.Now;
 
                     var heartRates = await GetHeartRatesAsync(startDate, endDate);
