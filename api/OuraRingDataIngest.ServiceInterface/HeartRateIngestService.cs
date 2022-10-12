@@ -30,8 +30,15 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    // var s = CrontabSchedule.Parse("* * 0,9,18 ? * SUN,MON,TUE,WED,THU,FRI,SAT *");
-                    var startDate = DateTime.SpecifyKind(DateTime.Now.AddHours(-8), DateTimeKind.Local);
+
+                    var s = CrontabSchedule.Parse(Environment.GetEnvironmentVariable("CRON"));
+                    var schedule = s.GetNextOccurrences(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(1)).ToList();
+                    var next = s.GetNextOccurrence(DateTime.Now);
+                    var timespan = schedule[1] - schedule[0];
+                    var delay = next - DateTime.Now;
+                    await Task.Delay(delay, stoppingToken);
+
+                    var startDate = DateTime.SpecifyKind(DateTime.Now.Subtract(timespan), DateTimeKind.Local);
                     var endDate = DateTime.Now;
 
                     var heartRates = await GetHeartRatesAsync(startDate, endDate);
@@ -40,7 +47,7 @@ namespace OuraRingDataIngest.ServiceInterface
                         await WriteJsonToAdls(heartRates);
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-                    await Task.Delay(TimeSpan.FromHours(4), stoppingToken);
+
                 }
             }
             catch (System.Exception ex)
@@ -93,8 +100,15 @@ namespace OuraRingDataIngest.ServiceInterface
                                      Environment.GetEnvironmentVariable("CLIENT_SECRET"),
                                      Environment.GetEnvironmentVariable("TENANTID"));
 
-            var ouraring = dataLakeClient.GetFileSystemClient("ouraring");
-            var heartrates = ouraring.GetDirectoryClient("heartrates");
+            var databricks = dataLakeClient.GetFileSystemClient("databricks");
+            var landing = databricks.GetDirectoryClient("landing");
+            if (!landing.Exists())
+                await landing.CreateAsync();
+            var ouraring = landing.GetSubDirectoryClient("ouraring");
+            if (!ouraring.Exists())
+                await ouraring.CreateAsync();
+
+            var heartrates = ouraring.GetSubDirectoryClient("heartrates");
             if (!heartrates.Exists())
                 await heartrates.CreateAsync();
 

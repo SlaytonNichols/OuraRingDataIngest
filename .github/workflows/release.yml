@@ -152,6 +152,7 @@ jobs:
           CLIENTID: ${{ secrets.CLIENTID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           TENANTID: ${{ secrets.TENANTID }}
+          CRON: ${{ secrets.CRON }}
         with:
           input: .deploy/docker-compose-template.yml
           output: .deploy/${{ github.event.repository.name }}-docker-compose.yml
@@ -180,6 +181,7 @@ jobs:
           CLIENTID: ${{ secrets.CLIENTID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           TENANTID: ${{ secrets.TENANTID }}   
+          CRON: ${{ secrets.CRON }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
