@@ -35,7 +35,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     _logger.LogInformation("HeartRateIngestService Starting...");
-                    var startDate = DateTime.Now.AddHours(-8);
+                    var startDate = DateTime.SpecifyKind(DateTime.Now.AddDays(-5), DateTimeKind.Local);
                     var endDate = DateTime.Now;
 
                     var heartRates = await GetHeartRatesAsync(startDate, endDate);
@@ -58,12 +58,14 @@ namespace OuraRingDataIngest.ServiceInterface
             try
             {
                 _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Starting...");
+                var startQueryParam = $"{startDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
+                var endQueryParam = $"{endDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
 
                 var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
+                heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", startQueryParam, false);
+                heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", endQueryParam, false);
 
-                heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", $"{startDate:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B"), false);
-                heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", $"{endDate:yyyy-MM-ddThh:mm:sszzz}".Replace("+", "%2B"), false);
-
+                _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Calling OuraRing API Endpoint: " + heartRateUrl);
                 var response = await heartRateUrl.GetJsonFromUrlAsync(x =>
                 {
                     x.With(req =>
@@ -72,7 +74,6 @@ namespace OuraRingDataIngest.ServiceInterface
                         req.AddHeader("Accept", "application/json");
                     });
                 }).ConfigAwait();
-
                 _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Completed... Oura Ring API Response:" + response);
 
                 return response.FromJson<HeartRates>();
@@ -102,7 +103,11 @@ namespace OuraRingDataIngest.ServiceInterface
                 await heartrates.CreateAsync();
 
             var fileName = @$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json";
-            File.WriteAllText(fileName, heartRates.ToJson());
+            File.WriteAllText(fileName, heartRates.Data.ToList().ToJson(x =>
+            {
+                x.DateHandler = DateHandler.ISO8601DateTime;
+                x.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
+            }));
             var file = heartrates.CreateFile(fileName);
             var fileClient = heartrates.GetFileClient(fileName);
             FileStream fileStream = File.OpenRead(fileName);

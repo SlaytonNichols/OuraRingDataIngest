@@ -9,5 +9,6 @@ namespace OuraRingDataIngest.ServiceModel
     {
         public IEnumerable<HeartRate> Data { get; set; }
         public IEnumerable<string> Errors { get; set; }
+        public string Detail { get; set; }
     }
 }
