@@ -29,14 +29,14 @@ namespace OuraRingDataIngest.ServiceInterface
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    _logger.LogInformation("HeartRateIngestService Starting...");
-
                     var s = CrontabSchedule.Parse(Environment.GetEnvironmentVariable("CRON"));
                     var schedule = s.GetNextOccurrences(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(1)).ToList();
                     var next = s.GetNextOccurrence(DateTime.Now);
                     var timespan = schedule[1] - schedule[0];
                     var delay = next - DateTime.Now;
                     await Task.Delay(delay, stoppingToken);
+
+                    _logger.LogInformation("HeartRateIngestService Starting...");
 
                     var startDate = DateTime.SpecifyKind(DateTime.Now.Subtract(timespan), DateTimeKind.Local);
                     var endDate = DateTime.Now;
@@ -47,7 +47,6 @@ namespace OuraRingDataIngest.ServiceInterface
                         await WriteJsonToAdls(heartRates);
 
                     _logger.LogInformation("HeartRateIngestService Completed.");
-
                 }
             }
             catch (System.Exception ex)
