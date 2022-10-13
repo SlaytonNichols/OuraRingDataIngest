@@ -33,25 +33,26 @@ namespace OuraRingDataIngest.ServiceInterface
                     var schedule = s.GetNextOccurrences(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(1)).ToList();
                     var next = s.GetNextOccurrence(DateTime.Now);
                     var timespan = schedule[1] - schedule[0];
+                    _logger.LogInformation($"Next Run: {next:yyyy-MM-ddTHH:mm:sszzz}");
                     var delay = next - DateTime.Now;
                     await Task.Delay(delay, stoppingToken);
 
-                    _logger.LogInformation("HeartRateIngestService Starting...");
+                    _logger.LogInformation("Starting...");
 
                     var startDate = DateTime.SpecifyKind(DateTime.Now.Subtract(timespan), DateTimeKind.Local);
                     var endDate = DateTime.Now;
-
+                    _logger.LogInformation($"Query From: {startDate:yyyy-MM-ddTHH:mm:sszzz}, Query To: {endDate:yyyy-MM-ddTHH:mm:sszzz}");
                     var heartRates = await GetHeartRatesAsync(startDate, endDate);
 
                     if (heartRates.Errors == null)
                         await WriteJsonToAdls(heartRates);
 
-                    _logger.LogInformation("HeartRateIngestService Completed.");
+                    _logger.LogInformation("Completed.");
                 }
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, "HeartRateIngestService Error");
+                _logger.LogError(ex, "Error");
             }
         }
 
@@ -59,7 +60,7 @@ namespace OuraRingDataIngest.ServiceInterface
         {
             try
             {
-                _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Starting...");
+                _logger.LogInformation("GetHeartRatesAsync Starting...");
                 var startQueryParam = $"{startDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
                 var endQueryParam = $"{endDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
 
@@ -67,7 +68,7 @@ namespace OuraRingDataIngest.ServiceInterface
                 heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", startQueryParam, false);
                 heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", endQueryParam, false);
 
-                _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Calling OuraRing API Endpoint: " + heartRateUrl);
+                _logger.LogInformation("GetHeartRatesAsync Calling OuraRing API Endpoint: " + heartRateUrl);
                 var response = await heartRateUrl.GetJsonFromUrlAsync(x =>
                 {
                     x.With(req =>
@@ -76,13 +77,13 @@ namespace OuraRingDataIngest.ServiceInterface
                         req.AddHeader("Accept", "application/json");
                     });
                 }).ConfigAwait();
-                _logger.LogInformation("HeartRateIngestService GetHeartRatesAsync Completed... Oura Ring API Response:" + response);
+                _logger.LogInformation("GetHeartRatesAsync Completed... Oura Ring API Response:" + response);
 
                 return response.FromJson<HeartRates>();
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, "HeartRateIngestService GetHeartRatesAsync Error");
+                _logger.LogError(ex, "GetHeartRatesAsync Error");
                 return new HeartRates
                 {
                     Errors = new List<string> { ex.Message }
