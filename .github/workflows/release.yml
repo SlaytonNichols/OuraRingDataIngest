@@ -35,31 +35,10 @@ jobs:
         with:
           ref: refs/tags/${{ github.event.inputs.version }}
 
-      - name: Replace Prod API and CDN URLs
-        env:
-          deploy_api: ${{ secrets.DEPLOY_API }}
-          deploy_cdn: ${{ secrets.DEPLOY_CDN }}
-        run: |
-          if [ -e ./.deploy/ci.prebuild.sh ]
-          then
-            chmod +x ./.deploy/ci.prebuild.sh
-            ./.deploy/ci.prebuild.sh
-          else
-            echo "Skipping CI prebuild"
-          fi
-
       - name: Setup node
         uses: actions/setup-node@v1
         with:
           node-version: 16
-
-      # Build UI which is copied to local server wwwroot directory to match content
-      - name: Install and build npm
-        run: |
-          npm install
-          npm run build
-          [[ -f ./post.build.js ]] && node ./post.build.js
-        working-directory: ./ui
 
       # Assign environment variables used in subsequent steps
       - name: repository name fix
@@ -92,15 +71,6 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.image_repository_name }}:${{ env.TAG_NAME }}
-
-      # Deploy UI to GitHub Pages
-      - name: Deploy to GitHub Pages        
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./api/OuraRingDataIngest/wwwroot
-          user_name: 'GitHub Action'
-          user_email: 'action@github.com'
 
   deploy_via_ssh:
     needs: push_to_registry
