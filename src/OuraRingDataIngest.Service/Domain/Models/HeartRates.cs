@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using ServiceStack;
-using ServiceStack.DataAnnotations;
 
-namespace OuraRingDataIngest.ServiceModel
+namespace OuraRingDataIngest.Service.Domain.Models
 {
     public class HeartRates
     {

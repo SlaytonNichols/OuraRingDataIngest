@@ -1,7 +1,8 @@
-using OuraRingDataIngest.ServiceInterface;
+using OuraRingDataIngest.Service;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddJsonApiClient(Environment.GetEnvironmentVariable("BASE_URI"));
+builder.Services.AddOuraRingDataIngestServices();
+builder.Services.AddHostedService<HeartRateIngestBackgroundService>();
 
 var app = builder.Build();
 
@@ -13,6 +14,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
     app.UseHttpsRedirection();
 }
-app.UseServiceStack(new AppHost());
 
+app.AddOuraRingDataIngestServiceStack(new AppHost());
 app.Run();

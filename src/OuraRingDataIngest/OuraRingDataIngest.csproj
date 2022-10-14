@@ -11,17 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
-
-  <Target Name="CreateAppDataFolderBuild" AfterTargets="AfterBuild">
-    <MakeDir Directories="$(BuildDir)App_Data" Condition="!Exists('$(BuildDir)App_Data')" />
-  </Target>
-
-  <Target Name="CreateAppDataFolder" AfterTargets="AfterPublish">
-    <MakeDir Directories="$(PublishDir)App_Data" Condition="!Exists('$(PublishDir)App_Data')" />
-  </Target>
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.7.0" />
@@ -37,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OuraRingDataIngest.ServiceInterface\OuraRingDataIngest.ServiceInterface.csproj" />
-    <ProjectReference Include="..\OuraRingDataIngest.ServiceModel\OuraRingDataIngest.ServiceModel.csproj" />
+    <ProjectReference Include="..\OuraRingDataIngest.Service\OuraRingDataIngest.Service.csproj" />
   </ItemGroup>
 </Project>

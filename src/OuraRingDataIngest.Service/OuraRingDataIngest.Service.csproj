@@ -15,8 +15,4 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\OuraRingDataIngest.ServiceModel\OuraRingDataIngest.ServiceModel.csproj" />
-  </ItemGroup>
-
 </Project>

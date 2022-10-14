@@ -13,6 +13,6 @@ jobs:
         dotnet-version: '6.0'
         include-prerelease: true
     - name: Build
-      run: dotnet build ./api
+      run: dotnet build ./src
     - name: Test
-      run: dotnet test ./api/OuraRingDataIngest.Tests
+      run: dotnet test ./src/OuraRingDataIngest.Tests

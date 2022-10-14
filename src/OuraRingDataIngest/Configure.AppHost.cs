@@ -1,8 +1,8 @@
 using Funq;
 using ServiceStack;
-using OuraRingDataIngest.ServiceInterface;
 using System.Text.Encodings.Web;
 using ServiceStack.Api.OpenApi;
+using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
 
 [assembly: HostingStartup(typeof(OuraRingDataIngest.AppHost))]
 
@@ -15,7 +15,6 @@ public class AppHost : AppHostBase, IHostingStartup
         {
             services.ConfigureNonBreakingSameSiteCookies(context.HostingEnvironment);
             services.AddHttpClient();
-            services.AddHostedService<HeartRateIngestService>();
             services.AddHttpUtilsClient();
         }).ConfigureLogging(logginBuilder =>
         {
@@ -30,7 +29,7 @@ public class AppHost : AppHostBase, IHostingStartup
             });
         });
 
-    public AppHost() : base("OuraRingDataIngest", typeof(HeartRateIngestService).Assembly) { }
+    public AppHost() : base("OuraRingDataIngest", typeof(HeartRateIngestWorker).Assembly) { }
 
     public override void Configure(Container container)
     {
