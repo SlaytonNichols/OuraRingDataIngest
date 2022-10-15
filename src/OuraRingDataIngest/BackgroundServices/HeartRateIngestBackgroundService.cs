@@ -2,7 +2,7 @@ using System;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
 using OuraRingDataIngest.Service.Infrastructure.Cron.CronClient;
 
-namespace OuraRingDataIngest
+namespace OuraRingDataIngest.BackgroundServices
 {
     public class HeartRateIngestBackgroundService : BackgroundService
     {

@@ -8,6 +8,6 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
 {
     public interface IHeartRateIngestWorker
     {
-        Task ExecuteAsync(CronInfo cronInfo);
+        Task<string> ExecuteAsync(CronInfo cronInfo = null, DateTime? start = null, DateTime? end = null);
     }
 }

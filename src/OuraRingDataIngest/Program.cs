@@ -1,3 +1,4 @@
+using OuraRingDataIngest.BackgroundServices;
 using OuraRingDataIngest.Service;
 
 var builder = WebApplication.CreateBuilder(args);
