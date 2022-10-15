@@ -57,10 +57,6 @@ public class AppHost : AppHostBase, IHostingStartup
         }, allowCredentials: true));
 
 
-        ConfigurePlugin<UiFeature>(feature =>
-        {
-            feature.Info.BrandIcon.Uri = "/assets/img/logo.svg";
-            feature.Info.BrandIcon.Cls = "inline-block w-8 h-8 mr-2";
-        });
+        ConfigurePlugin<UiFeature>(feature => { });
     }
 }
