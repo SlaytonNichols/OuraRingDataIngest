@@ -53,7 +53,7 @@ namespace OuraRingDataIngest.Service.Infrastructure.Adls.AdlsClient
             await fileClient.AppendAsync(fileStream, offset: 0);
 
             await fileClient.FlushAsync(position: fileSize);
-            File.Delete(fileName);
+            //File.Delete(fileName);
         }
     }
 }
