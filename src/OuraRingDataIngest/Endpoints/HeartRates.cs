@@ -4,7 +4,7 @@ using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
 using ServiceStack;
 
-namespace OuraRingDataIngest.Endpoints;
+namespace OuraRingDataIngest;
 
 [Route("/heartrates", "GET")]
 [ValidateHasRole("Admin")]

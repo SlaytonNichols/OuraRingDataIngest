@@ -2,7 +2,6 @@ using Funq;
 using ServiceStack;
 using System.Text.Encodings.Web;
 using ServiceStack.Api.OpenApi;
-using OuraRingDataIngest.Endpoints;
 
 [assembly: HostingStartup(typeof(OuraRingDataIngest.AppHost))]
 
