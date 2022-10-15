@@ -11,7 +11,7 @@ namespace OuraRingDataIngest.Service.Infrastructure.Cron.CronClient
     {
         public async Task<CronInfo> AwaitNext(CancellationToken stoppingToken)
         {
-            var s = CrontabSchedule.Parse(Environment.GetEnvironmentVariable("LOCAL_CRON"));
+            var s = CrontabSchedule.Parse(Environment.GetEnvironmentVariable("CRON"));
             var schedule = s.GetNextOccurrences(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(1)).ToList();
             var next = s.GetNextOccurrence(DateTime.Now);
             var timespan = schedule[1] - schedule[0];
