@@ -34,7 +34,7 @@ namespace OuraRingDataIngest.Service.Infrastructure.Cron.CronClient
         public List<DateTime> Schedule { get; set; }
         public DateTime Next { get; set; }
         public TimeSpan TimeSpan { get; set; }
-        public DateTime StartQueryDate { get; set; }
-        public DateTime EndQueryDate { get; set; }
+        public DateTime? StartQueryDate { get; set; }
+        public DateTime? EndQueryDate { get; set; }
     }
 }

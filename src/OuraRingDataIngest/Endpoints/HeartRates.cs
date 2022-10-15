@@ -1,16 +1,15 @@
 
+using OuraRingDataIngest.Service;
+using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
+using OuraRingDataIngest.Service.Protocol;
 using ServiceStack;
 
 namespace OuraRingDataIngest.Endpoints;
 
 [Route("/heartrates", "GET")]
 [ValidateHasRole("Admin")]
-public class QueryHeartRates : IReturn<string>
-{
-    public DateTime StartQueryDate { get; set; }
-    public DateTime EndQueryDate { get; set; }
-}
+public class ExecuteHeartRateIngestWorker : HeartRatesRequest, IReturn<HeartRatesPresenter> { }
 
 public class HeartRates : ServiceStack.Service
 {
@@ -20,8 +19,17 @@ public class HeartRates : ServiceStack.Service
         _worker = worker;
     }
 
-    public async Task<string> Get(QueryHeartRates query)
+    public async Task<object> Get(ExecuteHeartRateIngestWorker query)
     {
-        return await _worker.ExecuteAsync(start: query.StartQueryDate, end: query.EndQueryDate);
+        var response = new HeartRatesPresenter();
+        var request = new HeartRatesRequest
+        {
+            StartQueryDate = query.StartQueryDate,
+            EndQueryDate = query.EndQueryDate,
+            CronInfo = null
+        };
+        var result = await _worker.ExecuteAsync(request);
+        response.Response.HeartRates = result.HeartRates;
+        return response;
     }
 }

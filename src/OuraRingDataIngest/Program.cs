@@ -16,5 +16,5 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-app.AddOuraRingDataIngestServiceStack(new AppHost());
+app.UseServiceStack(new AppHost());
 app.Run();

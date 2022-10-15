@@ -18,9 +18,4 @@ public static class OuraRingDataIngestDependencyInjectionExtensions
         services.AddSingleton<IOuraRingClient, OuraRingClient>();
         services.AddSingleton<ICronClient, CronClient>();
     }
-
-    public static void AddOuraRingDataIngestServiceStack(this WebApplication app, AppHostBase appHost)
-    {
-        app.UseServiceStack(appHost);
-    }
 }

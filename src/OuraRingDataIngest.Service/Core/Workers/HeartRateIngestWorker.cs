@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Infrastructure.Adls.AdlsClient;
 using OuraRingDataIngest.Service.Infrastructure.Cron.CronClient;
 using OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRingClient;
@@ -22,12 +23,13 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
             _ouraRingClient = ouraRingClient;
         }
 
-        public async Task<string> ExecuteAsync(CronInfo cronInfo = null, DateTime? start = null, DateTime? end = null)
+        public async Task<HeartRatesResponse> ExecuteAsync(HeartRatesRequest request)
         {
             try
             {
-                var startQueryDate = cronInfo == null ? start.Value : cronInfo.StartQueryDate;
-                var endQueryDate = cronInfo == null ? end.Value : cronInfo.EndQueryDate;
+                var response = new HeartRatesResponse();
+                var startQueryDate = request.CronInfo?.StartQueryDate != null ? request.CronInfo.StartQueryDate.Value : request.StartQueryDate.Value;
+                var endQueryDate = request.CronInfo != null ? request.CronInfo.EndQueryDate.Value : request.EndQueryDate.Value;
                 _logger.LogInformation($"Query From: {startQueryDate:yyyy-MM-ddTHH:mm:sszzz}, Query To: {endQueryDate:yyyy-MM-ddTHH:mm:sszzz}");
                 var heartRates = await _ouraRingClient.GetHeartRatesAsync(startQueryDate, endQueryDate);
                 var json = heartRates.Data.ToList().ToJson(x =>
@@ -37,7 +39,9 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
                             });
                 if (heartRates.Errors == null)
                     await _adlsClient.WriteJsonToAdls(json);
-                return json;
+
+                response.HeartRates = heartRates;
+                return response;
             }
             catch (System.Exception ex)
             {

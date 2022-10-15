@@ -1,6 +1,8 @@
 using System;
+using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
 using OuraRingDataIngest.Service.Infrastructure.Cron.CronClient;
+using OuraRingDataIngest.Service.Protocol;
 
 namespace OuraRingDataIngest.BackgroundServices
 {
@@ -23,10 +25,16 @@ namespace OuraRingDataIngest.BackgroundServices
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var cronInfo = await _cronClient.AwaitNext(stoppingToken);
-
+                    var response = new HeartRatesPresenter();
+                    var request = new HeartRatesRequest
+                    {
+                        StartQueryDate = null,
+                        EndQueryDate = null,
+                        CronInfo = cronInfo
+                    };
                     _logger.LogInformation("Starting...");
 
-                    await _heartRateIngestWorker.ExecuteAsync(cronInfo);
+                    await _heartRateIngestWorker.ExecuteAsync(request);
 
                     _logger.LogInformation("Completed.");
                 }
