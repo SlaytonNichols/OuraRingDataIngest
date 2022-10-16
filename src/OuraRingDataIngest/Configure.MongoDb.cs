@@ -9,10 +9,11 @@ namespace OuraRingDataIngest
     public class ConfigureMongoDb : IHostingStartup
     {
         public void Configure(IWebHostBuilder builder) => builder
-            .ConfigureServices((context, services) => {
+            .ConfigureServices((context, services) =>
+            {
                 var mongoClient = new MongoClient();
-                IMongoDatabase mongoDatabase = mongoClient.GetDatabase("OuraRingDataIngest");
+                IMongoDatabase mongoDatabase = mongoClient.GetDatabase("SlaytonNichols");
                 services.AddSingleton(mongoDatabase);
             });
-    }    
+    }
 }
