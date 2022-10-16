@@ -1,7 +1,9 @@
 using OuraRingDataIngest.BackgroundServices;
 using OuraRingDataIngest.Service;
+using SlaytonNichols.Common;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCommonServices();
 builder.Services.AddOuraRingDataIngestServices();
 builder.Services.AddHostedService<HeartRateIngestBackgroundService>();
 
