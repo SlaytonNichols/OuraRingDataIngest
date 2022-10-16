@@ -3,11 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using OuraRingDataIngest.Service.Core.Dtos;
-using OuraRingDataIngest.Service.Infrastructure.Adls.AdlsClient;
-using OuraRingDataIngest.Service.Infrastructure.Cron.CronClient;
 using OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRingClient;
 using ServiceStack;
 using ServiceStack.Text;
+using SlaytonNichols.Common.Infrastructure.Adls;
 
 namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
 {

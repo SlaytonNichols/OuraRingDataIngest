@@ -1,5 +1,5 @@
 using System;
-using OuraRingDataIngest.Service.Infrastructure.Cron.CronClient;
+using SlaytonNichols.Common.Infrastructure.Cron;
 
 namespace OuraRingDataIngest.Service.Core.Dtos;
 

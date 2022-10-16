@@ -1,11 +1,10 @@
 using System;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
-using OuraRingDataIngest.Service.Infrastructure.Adls.AdlsClient;
-using OuraRingDataIngest.Service.Infrastructure.Cron.CronClient;
 using OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRingClient;
 using ServiceStack;
+using SlaytonNichols.Common.Infrastructure.Adls;
+using SlaytonNichols.Common.Infrastructure.Cron;
 
 namespace OuraRingDataIngest.Service;
 

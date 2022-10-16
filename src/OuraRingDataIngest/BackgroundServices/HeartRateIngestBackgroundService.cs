@@ -1,7 +1,7 @@
 using System;
 using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
-using OuraRingDataIngest.Service.Infrastructure.Cron.CronClient;
+using SlaytonNichols.Common.Infrastructure.Cron;
 
 namespace OuraRingDataIngest.BackgroundServices
 {
