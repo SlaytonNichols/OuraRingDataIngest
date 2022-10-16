@@ -9,7 +9,7 @@
     <PackageReference Include="ServiceStack.Server" Version="6.*" />
     <PackageReference Include="ServiceStack.Client" Version="6.*" />
     <PackageReference Include="ServiceStack.HttpClient" Version="6.*" />
-    <PackageReference Include="SlaytonNichols.Common" Version="1.1.0" />
+    <PackageReference Include="SlaytonNichols.Common" Version="1.0.6" />
 
   </ItemGroup>
 
