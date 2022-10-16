@@ -2,6 +2,7 @@ using Funq;
 using ServiceStack;
 using System.Text.Encodings.Web;
 using ServiceStack.Api.OpenApi;
+using SlaytonNichols.Common.ServiceStack;
 
 [assembly: HostingStartup(typeof(OuraRingDataIngest.AppHost))]
 
@@ -9,24 +10,7 @@ namespace OuraRingDataIngest;
 
 public class AppHost : AppHostBase, IHostingStartup
 {
-    public void Configure(IWebHostBuilder builder) => builder
-        .ConfigureServices((context, services) =>
-        {
-            services.ConfigureNonBreakingSameSiteCookies(context.HostingEnvironment);
-            services.AddHttpClient();
-            services.AddHttpUtilsClient();
-        }).ConfigureLogging(logginBuilder =>
-        {
-            logginBuilder.ClearProviders();
-            logginBuilder.AddJsonConsole(jsonConsoleFormatterOptions =>
-            {
-                jsonConsoleFormatterOptions.JsonWriterOptions = new()
-                {
-                    Indented = false,
-                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                };
-            });
-        });
+    public void Configure(IWebHostBuilder builder) => builder.ConfigureApplication();
 
     public AppHost() : base("OuraRingDataIngest", typeof(HeartRates).Assembly) { }
 

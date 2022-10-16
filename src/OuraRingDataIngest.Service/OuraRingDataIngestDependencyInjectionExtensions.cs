@@ -14,7 +14,8 @@ public static class OuraRingDataIngestDependencyInjectionExtensions
     {
         services.AddSingleton<IHeartRateIngestWorker, HeartRateIngestWorker>();
         services.AddSingleton<IAdlsClient, AdlsClient>();
-        services.AddSingleton<IOuraRingClient, OuraRingClient>();
         services.AddSingleton<ICronClient, CronClient>();
+        services.AddSingleton<IOuraRingClient, OuraRingClient>();
+
     }
 }
