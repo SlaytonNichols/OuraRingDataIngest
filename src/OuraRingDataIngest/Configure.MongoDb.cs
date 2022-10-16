@@ -11,7 +11,7 @@ namespace OuraRingDataIngest
         public void Configure(IWebHostBuilder builder) => builder
             .ConfigureServices((context, services) =>
             {
-                var mongoClient = new MongoClient();
+                var mongoClient = new MongoClient(context.Configuration.GetConnectionString("Mongo"));
                 IMongoDatabase mongoDatabase = mongoClient.GetDatabase("SlaytonNichols");
                 services.AddSingleton(mongoDatabase);
             });
