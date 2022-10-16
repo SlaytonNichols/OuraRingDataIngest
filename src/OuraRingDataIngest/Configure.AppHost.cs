@@ -57,6 +57,5 @@ public class AppHost : AppHostBase, IHostingStartup
 
 
         ConfigurePlugin<UiFeature>(feature => { });
-        Plugins.Add(new AdminDatabaseFeature());
     }
 }

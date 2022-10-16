@@ -23,17 +23,9 @@ services:
       CLIENT_SECRET: ${CLIENT_SECRET}
       TENANTID: ${TENANTID}
       CRON: ${CRON}
+      ConnectionStrings__Mongo: ${MONGO}
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
-  "${APP_NAME}-migration":
-    image: ghcr.io/${IMAGE_REPO}:${RELEASE_VERSION}
-    restart: "no"
-    profiles:
-      - migration
-    environment:
-      ConnectionStrings__DefaultConnection: ${DEFAULTCONNECTION}
-      AuthKeyBase64: ${AUTHKEYBASE64}
-    command: --AppTasks=migrate
   datadog:
     image: gcr.io/datadoghq/agent:7
     pid: host
