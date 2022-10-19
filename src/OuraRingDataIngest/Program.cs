@@ -7,6 +7,7 @@ builder.Services.AddCommonServices();
 builder.Services.AddOuraRingDataIngestServices();
 builder.Services.AddHostedService<HeartRateIngestBackgroundService>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

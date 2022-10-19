@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -37,7 +38,7 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
                                 x.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
                             });
                 if (heartRates.Errors == null)
-                    await _adlsClient.WriteJsonToAdls(json);
+                    await WriteJsonToAdls(json);
 
                 response.HeartRates = heartRates;
                 return response;
@@ -47,6 +48,37 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
                 _logger.LogError(ex, "Error");
                 return null;
             }
+        }
+
+        private async Task WriteJsonToAdls(string json)
+        {
+            var serviceClient = _adlsClient.GetDataLakeServiceClient(Environment.GetEnvironmentVariable("CLIENTID"),
+                                     Environment.GetEnvironmentVariable("CLIENT_SECRET"),
+                                     Environment.GetEnvironmentVariable("TENANTID"));
+            var databricks = serviceClient.GetFileSystemClient("databricks");
+            var landing = databricks.GetDirectoryClient("landing");
+            if (!landing.Exists())
+                await landing.CreateAsync();
+            var ouraring = landing.GetSubDirectoryClient("ouraring");
+            if (!ouraring.Exists())
+                await ouraring.CreateAsync();
+
+            var heartrates = ouraring.GetSubDirectoryClient("heartrates");
+            if (!heartrates.Exists())
+                await heartrates.CreateAsync();
+
+            var fileName = @$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json";
+            File.WriteAllText(fileName, json);
+            var file = heartrates.CreateFile(fileName);
+            var fileClient = heartrates.GetFileClient(fileName);
+            FileStream fileStream = File.OpenRead(fileName);
+
+            long fileSize = fileStream.Length;
+
+            await fileClient.AppendAsync(fileStream, offset: 0);
+
+            await fileClient.FlushAsync(position: fileSize);
+            File.Delete(fileName);
         }
     }
 }
