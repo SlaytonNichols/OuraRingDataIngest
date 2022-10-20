@@ -2,24 +2,24 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Core;
+using Azure.Identity;
+using Azure.Storage.Files.DataLake;
 using Microsoft.Extensions.Logging;
 using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRingClient;
 using ServiceStack;
 using ServiceStack.Text;
-using SlaytonNichols.Common.Infrastructure.Adls;
 
 namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
 {
     public class HeartRateIngestWorker : IHeartRateIngestWorker
     {
         private readonly ILogger<HeartRateIngestWorker> _logger;
-        private readonly IAdlsClient _adlsClient;
         private readonly IOuraRingClient _ouraRingClient;
-        public HeartRateIngestWorker(ILogger<HeartRateIngestWorker> logger, IAdlsClient adlsClient, IOuraRingClient ouraRingClient)
+        public HeartRateIngestWorker(ILogger<HeartRateIngestWorker> logger, IOuraRingClient ouraRingClient)
         {
             _logger = logger;
-            _adlsClient = adlsClient;
             _ouraRingClient = ouraRingClient;
         }
 
@@ -50,9 +50,20 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
             }
         }
 
+        private DataLakeServiceClient GetDataLakeServiceClient(String clientID, string clientSecret, string tenantID)
+        {
+
+            TokenCredential credential = new ClientSecretCredential(
+                tenantID, clientID, clientSecret, new TokenCredentialOptions());
+
+            string dfsUri = "https://snadls.dfs.core.windows.net";
+
+            return new DataLakeServiceClient(new Uri(dfsUri), credential);
+        }
+
         private async Task WriteJsonToAdls(string json)
         {
-            var serviceClient = _adlsClient.GetDataLakeServiceClient(Environment.GetEnvironmentVariable("CLIENTID"),
+            var serviceClient = GetDataLakeServiceClient(Environment.GetEnvironmentVariable("CLIENTID"),
                                      Environment.GetEnvironmentVariable("CLIENT_SECRET"),
                                      Environment.GetEnvironmentVariable("TENANTID"));
             var databricks = serviceClient.GetFileSystemClient("databricks");
