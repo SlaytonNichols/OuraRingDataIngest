@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OuraRingDataIngest.Service.Core.Mappers;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
+using OuraRingDataIngest.Service.Infrastructure.Adls;
 using OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRingClient;
 using ServiceStack;
 using SlaytonNichols.Common;
@@ -15,5 +16,6 @@ public static class OuraRingDataIngestDependencyInjectionExtensions
         services.AddSingleton<IHeartRateIngestWorker, HeartRateIngestWorker>();
         services.AddSingleton<IHeartRatesMapper, HeartRatesMapper>();
         services.AddSingleton<IOuraRingClient, OuraRingClient>();
+        services.AddSingleton<IAdlsClient, AdlsClient>();
     }
 }
