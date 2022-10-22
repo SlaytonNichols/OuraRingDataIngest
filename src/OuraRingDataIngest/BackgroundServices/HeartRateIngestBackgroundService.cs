@@ -25,7 +25,7 @@ namespace OuraRingDataIngest.BackgroundServices
                 {
                     var cronInfo = await _cronClient.AwaitNext(stoppingToken);
 
-                    var request = new HeartRatesRequest
+                    var request = new HeartRateIngestWorkerRequest
                     {
                         StartQueryDate = null,
                         EndQueryDate = null,

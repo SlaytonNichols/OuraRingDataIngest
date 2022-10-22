@@ -1,7 +1,5 @@
 using Funq;
-using ServiceStack;
-using System.Text.Encodings.Web;
-using ServiceStack.Api.OpenApi;
+using OuraRingDataIngest.Controllers;
 using SlaytonNichols.Common.ServiceStack;
 
 [assembly: HostingStartup(typeof(OuraRingDataIngest.AppHost))]
@@ -12,7 +10,7 @@ public class AppHost : AppHostBase, IHostingStartup
 {
     public void Configure(IWebHostBuilder builder) => builder.ConfigureApplication();
 
-    public AppHost() : base("OuraRingDataIngest", typeof(HeartRates).Assembly) { }
+    public AppHost() : base("OuraRingDataIngest", typeof(HeartRateIngestController).Assembly) { }
 
     public override void Configure(Container container) { }
 }

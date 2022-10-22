@@ -1,26 +1,24 @@
 
-using OuraRingDataIngest.Service;
 using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker;
-using ServiceStack;
 
-namespace OuraRingDataIngest;
+namespace OuraRingDataIngest.Controllers;
 
 [Route("/heartrates", "GET")]
 [ValidateHasRole("Admin")]
-public class ExecuteHeartRateIngestWorker : HeartRatesRequest, IReturn<HeartRatesResponse> { }
+public class ExecuteHeartRateIngest : HeartRateIngestWorkerRequest, IReturn<HeartRateIngestWorkerResponse> { }
 
-public class HeartRates : ServiceStack.Service
+public class HeartRateIngestController : ServiceStack.Service
 {
     private readonly IHeartRateIngestWorker _worker;
-    public HeartRates(IHeartRateIngestWorker worker)
+    public HeartRateIngestController(IHeartRateIngestWorker worker)
     {
         _worker = worker;
     }
 
-    public async Task<object> Get(ExecuteHeartRateIngestWorker query)
+    public async Task<object> Get(ExecuteHeartRateIngest query)
     {
-        var request = new HeartRatesRequest
+        var request = new HeartRateIngestWorkerRequest
         {
             StartQueryDate = query.StartQueryDate,
             EndQueryDate = query.EndQueryDate,

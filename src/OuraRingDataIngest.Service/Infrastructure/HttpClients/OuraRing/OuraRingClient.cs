@@ -6,7 +6,7 @@ using OuraRingDataIngest.Service.Domain.Models;
 using ServiceStack;
 using ServiceStack.Text;
 
-namespace OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRingClient
+namespace OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRingClient
 {
     public class OuraRingClient : IOuraRingClient
     {
@@ -43,10 +43,7 @@ namespace OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRingClient
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "GetHeartRatesAsync Error");
-                return new HeartRates
-                {
-                    Errors = new List<string> { ex.Message }
-                };
+                return new HeartRates { Errors = new List<string> { ex.Message } };
             }
         }
     }
