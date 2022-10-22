@@ -126,6 +126,7 @@ jobs:
           TENANTID: ${{ secrets.TENANTID }}
           CRON: ${{ secrets.CRON }}
           MONGO: ${{ secrets.MONGO }}
+          ADLS_URI: ${{ secrets.ADLS_URI }}
         with:
           input: .deploy/docker-compose-template.yml
           output: .deploy/${{ github.event.repository.name }}-docker-compose.yml

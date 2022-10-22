@@ -24,6 +24,7 @@ services:
       TENANTID: ${TENANTID}
       CRON: ${CRON}
       ConnectionStrings__Mongo: ${MONGO}
+      ADLS_URI: ${ADLS_URI}
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker", "service": "${APP_NAME}"}]'
   datadog:
