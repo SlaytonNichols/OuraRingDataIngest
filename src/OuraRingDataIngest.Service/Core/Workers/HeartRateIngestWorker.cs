@@ -36,42 +36,32 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
             var response = new HeartRateIngestWorkerResponse();
             try
             {
-                using (_logger.BeginScope(new Dictionary<string, object>
+                var queryDates = _dateManager.GetQueryDates(request);
+                var startQueryDate = queryDates.StartQueryDate;
+                var endQueryDate = queryDates.EndQueryDate;
+
+                _logger.LogInformation($"Query From: {startQueryDate:yyyy-MM-ddTHH:mm:sszzz}, Query To: {endQueryDate:yyyy-MM-ddTHH:mm:sszzz}");
+                var heartRatesUri = _ouraRingClient.BuildHeartRateUri(startQueryDate, endQueryDate);
+                var heartRates = await _ouraRingClient.GetHeartRatesAsync(heartRatesUri);
+                var heartRatesMapped = _heartRatesMapper.Map(heartRates);
+                var json = heartRatesMapped.ToList().ToJson(x =>
+                            {
+                                x.DateHandler = DateHandler.ISO8601DateTime;
+                                x.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
+                            });
+
+                if (heartRates != null && heartRates.Errors == null)
                 {
-                    {"dd.env", CorrelationIdentifier.Env},
-                    {"dd.service", CorrelationIdentifier.Service},
-                    {"dd.version", CorrelationIdentifier.Version},
-                    {"dd.trace_id", CorrelationIdentifier.TraceId.ToString()},
-                    {"dd.span_id", CorrelationIdentifier.SpanId.ToString()},
-                }))
-                {
-                    var queryDates = _dateManager.GetQueryDates(request);
-                    var startQueryDate = queryDates.StartQueryDate;
-                    var endQueryDate = queryDates.EndQueryDate;
-
-                    _logger.LogInformation($"Query From: {startQueryDate:yyyy-MM-ddTHH:mm:sszzz}, Query To: {endQueryDate:yyyy-MM-ddTHH:mm:sszzz}");
-                    var heartRatesUri = _ouraRingClient.BuildHeartRateUri(startQueryDate, endQueryDate);
-                    var heartRates = await _ouraRingClient.GetHeartRatesAsync(heartRatesUri);
-                    var heartRatesMapped = _heartRatesMapper.Map(heartRates);
-                    var json = heartRatesMapped.ToList().ToJson(x =>
-                                {
-                                    x.DateHandler = DateHandler.ISO8601DateTime;
-                                    x.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
-                                });
-
-                    if (heartRates != null && heartRates.Errors == null)
-                    {
-                        var target = await _adlsClient.CreateHeartRatesDirectoryIfNotExists();
-                        await _adlsClient.WriteJsonToDirectory(target, json);
-                        response.Results = heartRatesMapped.ToList();
-                    }
-                    else
-                    {
-                        response.Errors = heartRates.Errors;
-                    }
-
-                    return response;
+                    var target = await _adlsClient.CreateHeartRatesDirectoryIfNotExists();
+                    await _adlsClient.WriteJsonToDirectory(target, json);
+                    response.Results = heartRatesMapped.ToList();
                 }
+                else
+                {
+                    response.Errors = heartRates.Errors;
+                }
+
+                return response;
             }
             catch (System.Exception ex)
             {
