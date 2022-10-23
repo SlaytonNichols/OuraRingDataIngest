@@ -34,7 +34,7 @@ ENV LD_PRELOAD=/opt/datadog
 ENV TRACER_HOME=/opt/datadog
 ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
 ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
-ENV DD_DOTNET_TRACER_HOME=/opt/datadog
+ENV DD_DOTNET_TRACER_HOME=/opt/datadog/Datadog.Linux.ApiWrapper.x64.so
 ENV DD_INTEGRATIONS=/opt/datadog/integrations.json
 
 WORKDIR /app
