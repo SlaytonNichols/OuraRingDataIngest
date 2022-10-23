@@ -44,11 +44,8 @@ services:
       - DD_API_KEY=${DD_API_KEY}
       - DD_SITE=${DD_SITE}
       - DD_LOGS_ENABLED=true
-      - DD_LOGS_INJECTION=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_APPSEC_ENABLED=true
-      - DD_TRACE_STARTUP_LOGS=true
-      - DD_TRACE_DEBUG=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc/:/host/proc:ro
