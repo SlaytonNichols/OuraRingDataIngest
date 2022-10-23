@@ -2,17 +2,6 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /app
 
 COPY ./src .
-RUN --mount=type=secret,id=github_token \
-    dotnet nuget add source "https://nuget.pkg.github.com/SlaytonNichols/index.json" --name "github" \
-    --username "SlaytonNichols" \
-    --store-password-in-clear-text --password $(cat /run/secrets/github_token)
-RUN dotnet restore
-
-WORKDIR /app/OuraRingDataIngest
-RUN dotnet publish -c release -o /out --no-restore
-
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS runtime
-WORKDIR /app
 # Please select the corresponding download for your Linux containers https://github.com/DataDog/dd-trace-dotnet/releases/latest
 
 # Download and install the Tracer
@@ -29,6 +18,18 @@ ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
 ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
 ENV DD_DOTNET_TRACER_HOME=/opt/datadog
 ENV DD_INTEGRATIONS=/opt/datadog/integrations.json
+
+RUN --mount=type=secret,id=github_token \
+    dotnet nuget add source "https://nuget.pkg.github.com/SlaytonNichols/index.json" --name "github" \
+    --username "SlaytonNichols" \
+    --store-password-in-clear-text --password $(cat /run/secrets/github_token)
+RUN dotnet restore
+
+WORKDIR /app/OuraRingDataIngest
+RUN dotnet publish -c release -o /out --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS runtime
+WORKDIR /app
 
 COPY --from=build /out .
 ENTRYPOINT ["dotnet", "OuraRingDataIngest.dll"]
