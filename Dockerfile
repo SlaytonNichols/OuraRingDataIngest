@@ -29,12 +29,11 @@ RUN mkdir -p /opt/datadog \
 ENV CORECLR_ENABLE_PROFILING=1
 ENV DD_TRACE_STARTUP_LOGS=true
 ENV DD_TRACE_DEBUG=true
-ENV TRACER_HOME=/opt/datadog
 ENV DD_PROFILING_ENABLED=true
-
+ENV TRACER_HOME=/opt/datadog
 ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
 ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
-ENV DD_DOTNET_TRACER_HOME=/opt/datadog/Datadog.Linux.ApiWrapper.x64.so
+ENV DD_DOTNET_TRACER_HOME=/opt/datadog
 ENV DD_INTEGRATIONS=/opt/datadog/integrations.json
 
 WORKDIR /app
