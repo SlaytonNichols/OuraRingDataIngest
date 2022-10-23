@@ -47,6 +47,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_APPSEC_ENABLED=true
+      - DD_TRACE_STARTUP_LOGS=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc/:/host/proc:ro
