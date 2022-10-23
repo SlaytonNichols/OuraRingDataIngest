@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /app
 
-COPY ./src .
 # Please select the corresponding download for your Linux containers https://github.com/DataDog/dd-trace-dotnet/releases/latest
 
 # Download and install the Tracer
@@ -25,6 +24,7 @@ RUN --mount=type=secret,id=github_token \
     --store-password-in-clear-text --password $(cat /run/secrets/github_token)
 RUN dotnet restore
 
+COPY ./src .
 WORKDIR /app/OuraRingDataIngest
 RUN dotnet publish -c release -o /out --no-restore
 
