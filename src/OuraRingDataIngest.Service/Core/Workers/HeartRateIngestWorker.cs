@@ -9,6 +9,7 @@ using Azure.Identity;
 using Azure.Storage.Files.DataLake;
 using Microsoft.Extensions.Logging;
 using OuraRingDataIngest.Service.Core.Dtos;
+using OuraRingDataIngest.Service.Core.Managers;
 using OuraRingDataIngest.Service.Core.Mappers;
 using OuraRingDataIngest.Service.Infrastructure.Adls;
 using OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRingClient;
@@ -23,13 +24,15 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
         private readonly IOuraRingClient _ouraRingClient;
         private readonly IHeartRatesMapper _heartRatesMapper;
         private readonly IAdlsClient _adlsClient;
+        private readonly IHeartRateIngestWorkerDateManager _dateManager;
 
-        public HeartRateIngestWorker(ILogger<HeartRateIngestWorker> logger, IOuraRingClient ouraRingClient, IHeartRatesMapper heartRatesMapper, IAdlsClient adlsClient)
+        public HeartRateIngestWorker(ILogger<HeartRateIngestWorker> logger, IOuraRingClient ouraRingClient, IHeartRatesMapper heartRatesMapper, IAdlsClient adlsClient, IHeartRateIngestWorkerDateManager dateManager)
         {
             _logger = logger;
             _ouraRingClient = ouraRingClient;
             _heartRatesMapper = heartRatesMapper;
             _adlsClient = adlsClient;
+            _dateManager = dateManager;
         }
 
         public async Task<HeartRateIngestWorkerResponse> ExecuteAsync(HeartRateIngestWorkerRequest request)
@@ -37,11 +40,13 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
             var response = new HeartRateIngestWorkerResponse();
             try
             {
-                var startQueryDate = request.CronInfo?.StartQueryDate != null ? request.CronInfo.StartQueryDate.Value : request.StartQueryDate.Value;
-                var endQueryDate = request.CronInfo != null ? request.CronInfo.EndQueryDate.Value : request.EndQueryDate.Value;
+                var queryDates = _dateManager.GetQueryDates(request);
+                var startQueryDate = queryDates.StartQueryDate;
+                var endQueryDate = queryDates.EndQueryDate;
 
                 _logger.LogInformation($"Query From: {startQueryDate:yyyy-MM-ddTHH:mm:sszzz}, Query To: {endQueryDate:yyyy-MM-ddTHH:mm:sszzz}");
-                var heartRates = await _ouraRingClient.GetHeartRatesAsync(startQueryDate, endQueryDate);
+                var heartRatesUri = _ouraRingClient.BuildUri(startQueryDate, endQueryDate);
+                var heartRates = await _ouraRingClient.GetHeartRatesAsync(heartRatesUri);
                 var heartRatesMapped = _heartRatesMapper.Map(heartRates);
                 var json = heartRatesMapped.ToList().ToJson(x =>
                             {
@@ -49,9 +54,10 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
                                 x.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
                             });
 
-                if (heartRates.Errors == null)
+                if (heartRates != null && heartRates.Errors == null)
                 {
-                    await _adlsClient.WriteJsonToAdls(json);
+                    var target = await _adlsClient.CreateHeartRatesDirectoryIfNotExists();
+                    await _adlsClient.WriteJsonToDirectory(target, json);
                     response.Results = heartRatesMapped.ToList();
                 }
                 else

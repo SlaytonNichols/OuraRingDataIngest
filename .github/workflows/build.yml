@@ -16,4 +16,6 @@ jobs:
       env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}   
     - name: Build
-      run: dotnet build ./src
+      run: |
+        dotnet build ./src
+        dotnet test ./src/OuraRingDataIngest.Service.Tests/OuraRingDataIngest.Service.Tests.csproj

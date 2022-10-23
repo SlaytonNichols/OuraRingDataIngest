@@ -23,7 +23,7 @@ public class AdlsClient : IAdlsClient
         return new DataLakeServiceClient(new Uri(adlsUri), credential);
     }
 
-    public async Task WriteJsonToAdls(string json)
+    public async Task<DataLakeDirectoryClient> CreateHeartRatesDirectoryIfNotExists()
     {
         var serviceClient = GetDataLakeServiceClient(Environment.GetEnvironmentVariable("CLIENTID"),
                                  Environment.GetEnvironmentVariable("CLIENT_SECRET"),
@@ -41,13 +41,18 @@ public class AdlsClient : IAdlsClient
         if (!heartrates.Exists())
             await heartrates.CreateAsync();
 
+        return heartrates;
+    }
+
+    public async Task WriteJsonToDirectory(DataLakeDirectoryClient client, string json)
+    {
         var fileName = @$"{DateTime.Now:yyyy-MM-dd-HH-mm}.json";
         byte[] jsonBytes = Encoding.ASCII.GetBytes(json);
 
         using (MemoryStream fileStream = new MemoryStream(jsonBytes))
         {
-            var file = heartrates.CreateFile(fileName);
-            var fileClient = heartrates.GetFileClient(fileName);
+            var file = client.CreateFile(fileName);
+            var fileClient = client.GetFileClient(fileName);
 
             long fileSize = fileStream.Length;
 

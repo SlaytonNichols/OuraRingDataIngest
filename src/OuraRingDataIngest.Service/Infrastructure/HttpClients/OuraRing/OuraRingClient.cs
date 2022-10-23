@@ -15,20 +15,14 @@ namespace OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRin
         {
             _logger = logger;
         }
-        public async Task<HeartRates> GetHeartRatesAsync(DateTime startDate, DateTime endDate)
+        public async Task<HeartRates> GetHeartRatesAsync(string uri)
         {
             try
             {
                 _logger.LogInformation("GetHeartRatesAsync Starting...");
-                var startQueryParam = $"{startDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
-                var endQueryParam = $"{endDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
 
-                var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
-                heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", startQueryParam, false);
-                heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", endQueryParam, false);
-
-                _logger.LogInformation("GetHeartRatesAsync Calling OuraRing API Endpoint: " + heartRateUrl);
-                var response = await heartRateUrl.GetJsonFromUrlAsync(x =>
+                _logger.LogInformation("GetHeartRatesAsync Calling OuraRing API Endpoint: " + uri);
+                var response = await uri.GetJsonFromUrlAsync(x =>
                 {
                     x.With(req =>
                     {
@@ -45,6 +39,18 @@ namespace OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRin
                 _logger.LogError(ex, "GetHeartRatesAsync Error");
                 return new HeartRates { Errors = new List<string> { ex.Message } };
             }
+        }
+
+        public string BuildUri(DateTime startDate, DateTime endDate)
+        {
+            var startQueryParam = $"{startDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
+            var endQueryParam = $"{endDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
+
+            var heartRateUrl = $"https://api.ouraring.com/v2/usercollection/heartrate";
+            heartRateUrl = heartRateUrl.AddQueryParam("start_datetime", startQueryParam, false);
+            heartRateUrl = heartRateUrl.AddQueryParam("end_datetime", endQueryParam, false);
+
+            return heartRateUrl;
         }
     }
 }
