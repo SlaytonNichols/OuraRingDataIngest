@@ -8,6 +8,6 @@ namespace OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRin
     public interface IOuraRingClient
     {
         Task<HeartRates> GetHeartRatesAsync(string uri);
-        string BuildUri(DateTime startDate, DateTime endDate);
+        string BuildHeartRateUri(DateTime startDate, DateTime endDate);
     }
 }

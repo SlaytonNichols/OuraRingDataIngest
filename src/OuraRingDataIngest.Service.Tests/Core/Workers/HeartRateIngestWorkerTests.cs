@@ -34,7 +34,7 @@ public class HeartRateIngestWorkerTests
 
         var dateRespose = fixture.Create<(DateTime, DateTime)>();
         dateManager.Setup(x => x.GetQueryDates(request)).Returns(dateRespose);
-        ouraRingClient.Setup(x => x.BuildUri(dateRespose.Item1, dateRespose.Item2)).Returns("uri");
+        ouraRingClient.Setup(x => x.BuildHeartRateUri(dateRespose.Item1, dateRespose.Item2)).Returns("uri");
         var heartRates = fixture.Build<HeartRates>().With(x => x.Data, fixture.CreateMany<HeartRate>().ToList()).Create();
         ouraRingClient.Setup(x => x.GetHeartRatesAsync("uri")).ReturnsAsync(heartRates);
         heartRates.Errors = null;
@@ -68,7 +68,7 @@ public class HeartRateIngestWorkerTests
 
         var dateRespose = fixture.Create<(DateTime, DateTime)>();
         dateManager.Setup(x => x.GetQueryDates(request)).Returns(dateRespose);
-        ouraRingClient.Setup(x => x.BuildUri(dateRespose.Item1, dateRespose.Item2)).Returns("uri");
+        ouraRingClient.Setup(x => x.BuildHeartRateUri(dateRespose.Item1, dateRespose.Item2)).Returns("uri");
         var heartRates = fixture.Build<HeartRates>().With(x => x.Data, fixture.CreateMany<HeartRate>().ToList()).Create();
         ouraRingClient.Setup(x => x.GetHeartRatesAsync("uri")).ReturnsAsync(heartRates);
         heartRates.Errors = null;
@@ -78,7 +78,12 @@ public class HeartRateIngestWorkerTests
         adlsClient.Setup(x => x.WriteJsonToDirectory(dirClient.Object, heartRates.ToJson())).Returns(Task.CompletedTask);
 
         // Act
-        var response = await new HeartRateIngestWorker(logger.Object, ouraRingClient.Object, mapper.Object, adlsClient.Object, dateManager.Object).ExecuteAsync(request);
+        var worker = new HeartRateIngestWorker(logger.Object,
+                                                       ouraRingClient.Object,
+                                                       mapper.Object,
+                                                       adlsClient.Object,
+                                                       dateManager.Object);
+        var response = await worker.ExecuteAsync(request);
 
         // Assert
         Assert.Null(response.Errors);

@@ -41,7 +41,7 @@ namespace OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRin
             }
         }
 
-        public string BuildUri(DateTime startDate, DateTime endDate)
+        public string BuildHeartRateUri(DateTime startDate, DateTime endDate)
         {
             var startQueryParam = $"{startDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");
             var endQueryParam = $"{endDate:yyyy-MM-ddTHH:mm:sszzz}".Replace("+", "%2B");

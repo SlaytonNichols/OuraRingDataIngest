@@ -45,7 +45,7 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
                 var endQueryDate = queryDates.EndQueryDate;
 
                 _logger.LogInformation($"Query From: {startQueryDate:yyyy-MM-ddTHH:mm:sszzz}, Query To: {endQueryDate:yyyy-MM-ddTHH:mm:sszzz}");
-                var heartRatesUri = _ouraRingClient.BuildUri(startQueryDate, endQueryDate);
+                var heartRatesUri = _ouraRingClient.BuildHeartRateUri(startQueryDate, endQueryDate);
                 var heartRates = await _ouraRingClient.GetHeartRatesAsync(heartRatesUri);
                 var heartRatesMapped = _heartRatesMapper.Map(heartRates);
                 var json = heartRatesMapped.ToList().ToJson(x =>

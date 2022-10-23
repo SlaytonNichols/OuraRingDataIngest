@@ -14,21 +14,20 @@ public class AdlsClient : IAdlsClient
     {
 
     }
-    private DataLakeServiceClient GetDataLakeServiceClient(String clientID, string clientSecret, string tenantID, string adlsUri)
+    private DataLakeServiceClient GetDataLakeServiceClient()
     {
 
-        TokenCredential credential = new ClientSecretCredential(
-            tenantID, clientID, clientSecret, new TokenCredentialOptions());
+        TokenCredential credential = new ClientSecretCredential(Environment.GetEnvironmentVariable("TENANTID"),
+                                                                Environment.GetEnvironmentVariable("CLIENTID"),
+                                                                Environment.GetEnvironmentVariable("CLIENT_SECRET"),
+                                                                new TokenCredentialOptions());
 
-        return new DataLakeServiceClient(new Uri(adlsUri), credential);
+        return new DataLakeServiceClient(new Uri(Environment.GetEnvironmentVariable("ADLS_URI")), credential);
     }
 
     public async Task<DataLakeDirectoryClient> CreateHeartRatesDirectoryIfNotExists()
     {
-        var serviceClient = GetDataLakeServiceClient(Environment.GetEnvironmentVariable("CLIENTID"),
-                                 Environment.GetEnvironmentVariable("CLIENT_SECRET"),
-                                 Environment.GetEnvironmentVariable("TENANTID"),
-                                 Environment.GetEnvironmentVariable("ADLS_URI"));
+        var serviceClient = GetDataLakeServiceClient();
         var databricks = serviceClient.GetFileSystemClient("databricks");
         var landing = databricks.GetDirectoryClient("landing");
         if (!landing.Exists())
