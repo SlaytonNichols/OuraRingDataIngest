@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Datadog.Trace;
 using Microsoft.Extensions.Logging;
 using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Core.Managers;
@@ -35,7 +36,14 @@ namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
             var response = new HeartRateIngestWorkerResponse();
             try
             {
-                using (Tracer.Instance.StartActive("OuraRingDataIngest.Service.Core.Workers - HeartRateIngestWorker.ExecuteAsync()"))
+                using (_logger.BeginScope(new Dictionary<string, object>
+                {
+                    {"dd.env", CorrelationIdentifier.Env},
+                    {"dd.service", CorrelationIdentifier.Service},
+                    {"dd.version", CorrelationIdentifier.Version},
+                    {"dd.trace_id", CorrelationIdentifier.TraceId.ToString()},
+                    {"dd.span_id", CorrelationIdentifier.SpanId.ToString()},
+                }))
                 {
                     var queryDates = _dateManager.GetQueryDates(request);
                     var startQueryDate = queryDates.StartQueryDate;
