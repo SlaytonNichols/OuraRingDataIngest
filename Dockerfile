@@ -13,8 +13,6 @@ RUN dotnet publish -c release -o /out --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS runtime
 WORKDIR /app
-COPY --from=build /out .
-
 # Please select the corresponding download for your Linux containers https://github.com/DataDog/dd-trace-dotnet/releases/latest
 
 # Download and install the Tracer
@@ -32,4 +30,5 @@ ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
 ENV DD_DOTNET_TRACER_HOME=/opt/datadog
 ENV DD_INTEGRATIONS=/opt/datadog/integrations.json
 
+COPY --from=build /out .
 ENTRYPOINT ["dotnet", "OuraRingDataIngest.dll"]
