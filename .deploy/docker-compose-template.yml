@@ -28,10 +28,6 @@ services:
       DD_ENV: 'Production'
       DD_SERVICE: ${APP_NAME}
       DD_VERSION: ${RELEASE_VERSION}
-      DD_AGENT_HOST: datadog-agent
-      DD_TRACE_AGENT_PORT: 8126
-      DD_TRACE_ROUTE_TEMPLATE_RESOURCE_NAMES_ENABLED: "true"
-      DD_RUNTIME_METRICS_ENABLED: "true"
     labels:
       com.datadoghq.ad.logs: '[{"source": "csharp", "service": "${APP_NAME}"}]'
       com.datadoghq.tags.env: 'Production'
