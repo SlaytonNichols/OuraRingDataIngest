@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Datadog.Trace;
 using Microsoft.Extensions.Logging;
 using OuraRingDataIngest.Service.Core.Dtos;
 using OuraRingDataIngest.Service.Core.Managers;
@@ -10,7 +9,6 @@ using OuraRingDataIngest.Service.Infrastructure.Adls;
 using OuraRingDataIngest.Service.Infrastructure.HttpClients.OuraRing.OuraRingClient;
 using ServiceStack;
 using ServiceStack.Text;
-using Tracer = Datadog.Trace.Tracer;
 
 namespace OuraRingDataIngest.Service.Core.Workers.HeartRateIngestWorker
 {
