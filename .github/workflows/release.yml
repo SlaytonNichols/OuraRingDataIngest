@@ -119,7 +119,6 @@ jobs:
           Oura__Pat: ${{ secrets.OURAPAT }}
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          SERVICESTACK_LICENSE: ${{ secrets.SERVICESTACK_LICENSE }}
           BASE_URI: ${{ secrets.BASE_URI }}
           CLIENTID: ${{ secrets.CLIENTID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}

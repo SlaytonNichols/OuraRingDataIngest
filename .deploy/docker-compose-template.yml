@@ -17,7 +17,6 @@ services:
       Oura__Pat: ${Oura__Pat}
       EMAIL: ${EMAIL}
       PASSWORD: ${PASSWORD}
-      SERVICESTACK_LICENSE: ${SERVICESTACK_LICENSE}
       BASE_URI: ${BASE_URI}
       CLIENTID: ${CLIENTID}
       CLIENT_SECRET: ${CLIENT_SECRET}
