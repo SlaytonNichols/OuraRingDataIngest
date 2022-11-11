@@ -25,14 +25,8 @@ services:
       CRON: ${CRON}
       ConnectionStrings__Mongo: ${MONGO}
       ADLS_URI: ${ADLS_URI}
-      DD_ENV: 'Production'
-      DD_SERVICE: ${APP_NAME}
-      DD_VERSION: ${RELEASE_VERSION}
     labels:
       com.datadoghq.ad.logs: '[{"source": "csharp", "service": "${APP_NAME}"}]'
-      com.datadoghq.tags.env: 'Production'
-      com.datadoghq.tags.service: '${APP_NAME}'
-      com.datadoghq.tags.version: '${RELEASE_VERSION}'
   datadog:
     image: gcr.io/datadoghq/agent:7
     pid: host
@@ -40,8 +34,6 @@ services:
       - DD_API_KEY=${DD_API_KEY}
       - DD_SITE=${DD_SITE}
       - DD_LOGS_ENABLED=true
-      - DD_PROCESS_AGENT_ENABLED=true
-      - DD_APPSEC_ENABLED=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc/:/host/proc:ro
